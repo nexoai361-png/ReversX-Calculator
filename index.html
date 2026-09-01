@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>Calculator</title>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
 * {
   margin: 0;
@@ -14,7 +15,7 @@
 }
 
 body {
-  font-family: 'Segoe UI', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Lato', sans-serif;
   background: #1e1e1e;
   display: flex;
   justify-content: center;
@@ -47,6 +48,7 @@ body {
 .history {
   color: #888;
   font-size: 16px;
+  font-weight: 400;
   min-height: 24px;
   text-align: right;
   width: 100%;
@@ -58,6 +60,7 @@ body {
 .expression {
   color: #aaa;
   font-size: 18px;
+  font-weight: 400;
   min-height: 28px;
   text-align: right;
   width: 100%;
@@ -80,7 +83,6 @@ body {
 .buttons {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 1px;
   padding: 8px;
   gap: 6px;
 }
@@ -90,6 +92,7 @@ body {
   border-radius: 12px;
   font-size: 22px;
   font-weight: 400;
+  font-family: 'Lato', sans-serif;
   padding: 18px 0;
   cursor: pointer;
   transition: all 0.1s ease;
@@ -127,7 +130,7 @@ body {
   background: #4fc3f7;
   color: #1e1e1e;
   font-size: 26px;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .btn-equals:active {
@@ -158,22 +161,6 @@ body {
   grid-column: span 2;
 }
 
-.btn-ripple {
-  position: absolute;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.2);
-  transform: scale(0);
-  animation: ripple 0.4s ease-out;
-  pointer-events: none;
-}
-
-@keyframes ripple {
-  to {
-    transform: scale(4);
-    opacity: 0;
-  }
-}
-
 .mode-toggle {
   display: flex;
   padding: 8px 12px;
@@ -190,6 +177,8 @@ body {
   background: transparent;
   color: #888;
   font-size: 13px;
+  font-family: 'Lato', sans-serif;
+  font-weight: 400;
   cursor: pointer;
   transition: all 0.2s;
 }
@@ -229,6 +218,8 @@ body {
   background: #333;
   color: #aaa;
   font-size: 11px;
+  font-family: 'Lato', sans-serif;
+  font-weight: 400;
   cursor: pointer;
   transition: all 0.2s;
 }
@@ -298,12 +289,12 @@ body {
     <button class="btn btn-clear" onclick="clearAll()">AC</button>
     <button class="btn btn-function" onclick="toggleSign()">&plusmn;</button>
     <button class="btn btn-function" onclick="percentage()">%</button>
-    <button class="btn btn-operator" onclick="appendOperator('&divide;')">&divide;</button>
+    <button class="btn btn-operator" onclick="appendOperator('/')">&divide;</button>
 
     <button class="btn btn-number" onclick="appendNumber('7')">7</button>
     <button class="btn btn-number" onclick="appendNumber('8')">8</button>
     <button class="btn btn-number" onclick="appendNumber('9')">9</button>
-    <button class="btn btn-operator" onclick="appendOperator('&times;')">&times;</button>
+    <button class="btn btn-operator" onclick="appendOperator('*')">&times;</button>
 
     <button class="btn btn-number" onclick="appendNumber('4')">4</button>
     <button class="btn btn-number" onclick="appendNumber('5')">5</button>
@@ -328,7 +319,6 @@ let operator = null;
 let shouldResetScreen = false;
 let memory = 0;
 let history = '';
-let isScientific = false;
 
 const resultEl = document.getElementById('result');
 const expressionEl = document.getElementById('expression');
@@ -336,31 +326,43 @@ const historyEl = document.getElementById('history');
 const scientificEl = document.getElementById('scientific');
 
 function updateDisplay() {
-  resultEl.textContent = formatNumber(currentInput);
+  resultEl.textContent = formatDisplay(currentInput);
   expressionEl.innerHTML = history || '&nbsp;';
 }
 
-function formatNumber(num) {
-  if (num === 'Error' || num === 'Infinity' || num === '-Infinity') return num;
+function formatDisplay(num) {
+  if (num === 'Error' || num === 'Infinity' || num === '-Infinity' || num === 'NaN') return 'Error';
+  const n = parseFloat(num);
+  if (isNaN(n)) return num;
+  if (Number.isInteger(n) && Math.abs(n) < 1e15) {
+    return n.toLocaleString('en-US');
+  }
   if (num.includes('.')) {
     const parts = num.split('.');
-    parts[0] = parseInt(parts[0] || '0').toLocaleString('en-US');
-    return parts.join('.');
+    const intPart = parseInt(parts[0].replace('-', '')) || 0;
+    const sign = parts[0].startsWith('-') ? '-' : '';
+    return sign + intPart.toLocaleString('en-US') + '.' + parts[1];
   }
-  if (num.length > 12) {
-    return parseFloat(num).toExponential(6);
-  }
-  return parseInt(num).toLocaleString('en-US');
+  return n.toLocaleString('en-US');
+}
+
+function getRaw(numStr) {
+  return numStr.replace(/,/g, '');
 }
 
 function appendNumber(num) {
   if (currentInput === 'Error') clearAll();
-  if (currentInput === '0' || shouldResetScreen) {
+  if (shouldResetScreen) {
     currentInput = num;
     shouldResetScreen = false;
   } else {
-    if (currentInput.replace(/[^0-9]/g, '').length >= 15) return;
-    currentInput += num;
+    const raw = getRaw(currentInput);
+    if (raw.replace(/[^0-9]/g, '').length >= 15) return;
+    if (currentInput === '0') {
+      currentInput = num;
+    } else {
+      currentInput = currentInput + num;
+    }
   }
   updateDisplay();
 }
@@ -373,7 +375,7 @@ function appendDecimal() {
     return;
   }
   if (!currentInput.includes('.')) {
-    currentInput += '.';
+    currentInput = currentInput + '.';
   }
   updateDisplay();
 }
@@ -383,31 +385,45 @@ function appendOperator(op) {
   if (operator !== null && !shouldResetScreen) {
     compute();
   }
-  previousInput = currentInput;
+  previousInput = getRaw(currentInput);
   operator = op;
-  history = formatNumber(previousInput) + ' ' + op;
+  history = formatDisplay(currentInput) + ' ' + getOpSymbol(op);
   shouldResetScreen = true;
   updateDisplay();
 }
 
+function getOpSymbol(op) {
+  switch(op) {
+    case '*': return '&times;';
+    case '/': return '&divide;';
+    case '+': return '+';
+    case '-': return '-';
+    case '^': return '^';
+    default: return op;
+  }
+}
+
 function compute() {
-  if (operator === null || shouldResetScreen) return;
+  if (operator === null) return;
   let result;
   const prev = parseFloat(previousInput);
-  const curr = parseFloat(currentInput);
+  const curr = parseFloat(getRaw(currentInput));
+
+  if (isNaN(prev) || isNaN(curr)) return;
 
   switch(operator) {
     case '+': result = prev + curr; break;
     case '-': result = prev - curr; break;
-    case '&times;': result = prev * curr; break;
-    case '&divide;':
+    case '*': result = prev * curr; break;
+    case '/':
       if (curr === 0) { currentInput = 'Error'; operator = null; history = ''; updateDisplay(); return; }
-      result = prev / curr; break;
+      result = prev / curr;
+      break;
     case '^': result = Math.pow(prev, curr); break;
     default: return;
   }
 
-  history = formatNumber(previousInput) + ' ' + operator + ' ' + formatNumber(currentInput) + ' =';
+  history = formatDisplay(previousInput) + ' ' + getOpSymbol(operator) + ' ' + formatDisplay(currentInput) + ' =';
   currentInput = parseFloat(result.toPrecision(12)).toString();
   operator = null;
   previousInput = '';
@@ -441,13 +457,14 @@ function toggleSign() {
 
 function percentage() {
   if (currentInput === 'Error') return;
-  currentInput = (parseFloat(currentInput) / 100).toString();
+  const val = parseFloat(getRaw(currentInput));
+  currentInput = (val / 100).toString();
   updateDisplay();
 }
 
 function appendFunction(func) {
   if (currentInput === 'Error') return;
-  const num = parseFloat(currentInput);
+  const num = parseFloat(getRaw(currentInput));
   let result;
   switch(func) {
     case 'sin': result = Math.sin(num * Math.PI / 180); break;
@@ -459,6 +476,7 @@ function appendFunction(func) {
     case 'cbrt': result = Math.cbrt(num); break;
     case 'abs': result = Math.abs(num); break;
   }
+  if (isNaN(result) || !isFinite(result)) { currentInput = 'Error'; updateDisplay(); return; }
   history = func + '(' + currentInput + ')';
   currentInput = parseFloat(result.toPrecision(12)).toString();
   shouldResetScreen = true;
@@ -467,8 +485,8 @@ function appendFunction(func) {
 
 function square() {
   if (currentInput === 'Error') return;
-  const num = parseFloat(currentInput);
-  history = currentInput + '²';
+  const num = parseFloat(getRaw(currentInput));
+  history = formatDisplay(currentInput) + '²';
   currentInput = parseFloat((num * num).toPrecision(12)).toString();
   shouldResetScreen = true;
   updateDisplay();
@@ -476,24 +494,24 @@ function square() {
 
 function cube() {
   if (currentInput === 'Error') return;
-  const num = parseFloat(currentInput);
-  history = currentInput + '³';
+  const num = parseFloat(getRaw(currentInput));
+  history = formatDisplay(currentInput) + '³';
   currentInput = parseFloat((num * num * num).toPrecision(12)).toString();
   shouldResetScreen = true;
   updateDisplay();
 }
 
 function power() {
-  previousInput = currentInput;
+  previousInput = getRaw(currentInput);
   operator = '^';
-  history = formatNumber(previousInput) + '^';
+  history = formatDisplay(previousInput) + '^';
   shouldResetScreen = true;
   updateDisplay();
 }
 
 function factorial() {
   if (currentInput === 'Error') return;
-  const num = parseInt(currentInput);
+  const num = parseInt(getRaw(currentInput));
   if (num < 0 || num > 170) { currentInput = 'Error'; updateDisplay(); return; }
   let result = 1;
   for (let i = 2; i <= num; i++) result *= i;
@@ -505,7 +523,7 @@ function factorial() {
 
 function inverse() {
   if (currentInput === 'Error') return;
-  const num = parseFloat(currentInput);
+  const num = parseFloat(getRaw(currentInput));
   if (num === 0) { currentInput = 'Error'; updateDisplay(); return; }
   history = '1/(' + currentInput + ')';
   currentInput = parseFloat((1 / num).toPrecision(12)).toString();
@@ -538,22 +556,25 @@ function setMode(mode) {
 
 function memoryClear() { memory = 0; }
 function memoryRecall() { currentInput = memory.toString(); shouldResetScreen = true; updateDisplay(); }
-function memoryAdd() { memory += parseFloat(currentInput) || 0; }
-function memorySubtract() { memory -= parseFloat(currentInput) || 0; }
-function memoryStore() { memory = parseFloat(currentInput) || 0; }
+function memoryAdd() { memory += parseFloat(getRaw(currentInput)) || 0; }
+function memorySubtract() { memory -= parseFloat(getRaw(currentInput)) || 0; }
+function memoryStore() { memory = parseFloat(getRaw(currentInput)) || 0; }
 
 document.addEventListener('keydown', (e) => {
   if (e.key >= '0' && e.key <= '9') appendNumber(e.key);
   else if (e.key === '.') appendDecimal();
   else if (e.key === '+') appendOperator('+');
   else if (e.key === '-') appendOperator('-');
-  else if (e.key === '*') appendOperator('&times;');
-  else if (e.key === '/') { e.preventDefault(); appendOperator('&divide;'); }
+  else if (e.key === '*') appendOperator('*');
+  else if (e.key === '/') { e.preventDefault(); appendOperator('/'); }
   else if (e.key === 'Enter' || e.key === '=') calculate();
   else if (e.key === 'Escape') clearAll();
   else if (e.key === 'Backspace') {
-    if (currentInput.length > 1) {
-      currentInput = currentInput.slice(0, -1);
+    if (shouldResetScreen) { clearAll(); return; }
+    const raw = getRaw(currentInput);
+    if (raw.length > 1) {
+      const newRaw = raw.slice(0, -1);
+      currentInput = newRaw === '-' || newRaw === '' ? '0' : newRaw;
     } else {
       currentInput = '0';
     }
