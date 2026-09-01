@@ -340,95 +340,29 @@ body {
   background: var(--bg-primary);
 }
 
-.custom-select {
-  position: relative;
-  min-width: 120px;
-}
-
-.custom-select-trigger {
+.converter-select {
   background: var(--bg-input);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 12px 32px 12px 12px;
+  padding: 12px 12px;
   color: var(--text-active);
   font-size: 13px;
   font-family: 'Lato', sans-serif;
+  outline: none;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  position: relative;
-  transition: border-color 0.2s;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  height: 100%;
+  min-width: 110px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23858585'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 18px;
+  padding-right: 32px;
 }
 
-.custom-select-trigger:hover {
-  border-color: var(--text-secondary);
-}
-
-.custom-select.open .custom-select-trigger {
+.converter-select:focus {
   border-color: var(--border-focus);
-}
-
-.custom-select-trigger .material-icons {
-  position: absolute;
-  right: 8px;
-  font-size: 18px;
-  color: var(--text-secondary);
-  transition: transform 0.2s;
-}
-
-.custom-select.open .custom-select-trigger .material-icons {
-  transform: rotate(180deg);
-}
-
-.custom-select-dropdown {
-  position: fixed;
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  max-height: 250px;
-  overflow-y: auto;
-  z-index: 1000;
-  display: none;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-  min-width: 150px;
-}
-
-.custom-select.open .custom-select-dropdown {
-  display: block;
-}
-
-.custom-select-option {
-  padding: 12px 16px;
-  font-size: 14px;
-  color: var(--text-primary);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  transition: background 0.1s;
-}
-
-.custom-select-option:hover,
-.custom-select-option:active {
-  background: var(--bg-hover);
-}
-
-.custom-select-option.selected {
-  background: var(--accent-muted);
-  color: var(--text-active);
-}
-
-.custom-select-option.selected::after {
-  content: 'check';
-  font-family: 'Material Icons';
-  font-size: 16px;
-  margin-left: auto;
-  color: var(--accent);
 }
 
 .converter-swap-btn {
@@ -663,22 +597,16 @@ body {
           <div class="converter-field-label">From</div>
           <div class="converter-input-group">
             <input type="number" class="converter-input" id="lengthFrom" placeholder="Enter value" oninput="convertLength()">
-            <div class="custom-select" id="lengthFromUnit" data-value="m">
-              <div class="custom-select-trigger">
-                <span class="label">Meter</span>
-                <span class="material-icons">expand_more</span>
-              </div>
-              <div class="custom-select-dropdown">
-                <div class="custom-select-option" data-value="mm">Millimeter</div>
-                <div class="custom-select-option" data-value="cm">Centimeter</div>
-                <div class="custom-select-option selected" data-value="m">Meter</div>
-                <div class="custom-select-option" data-value="km">Kilometer</div>
-                <div class="custom-select-option" data-value="in">Inch</div>
-                <div class="custom-select-option" data-value="ft">Feet</div>
-                <div class="custom-select-option" data-value="yd">Yard</div>
-                <div class="custom-select-option" data-value="mi">Mile</div>
-              </div>
-            </div>
+            <select class="converter-select" id="lengthFromUnit" onchange="convertLength()">
+              <option value="mm">Millimeter</option>
+              <option value="cm">Centimeter</option>
+              <option value="m" selected>Meter</option>
+              <option value="km">Kilometer</option>
+              <option value="in">Inch</option>
+              <option value="ft">Feet</option>
+              <option value="yd">Yard</option>
+              <option value="mi">Mile</option>
+            </select>
           </div>
         </div>
         <div class="converter-swap-btn">
@@ -690,22 +618,16 @@ body {
           <div class="converter-field-label">To</div>
           <div class="converter-input-group">
             <input type="number" class="converter-input" id="lengthTo" placeholder="Result" readonly>
-            <div class="custom-select" id="lengthToUnit" data-value="ft">
-              <div class="custom-select-trigger">
-                <span class="label">Feet</span>
-                <span class="material-icons">expand_more</span>
-              </div>
-              <div class="custom-select-dropdown">
-                <div class="custom-select-option" data-value="mm">Millimeter</div>
-                <div class="custom-select-option" data-value="cm">Centimeter</div>
-                <div class="custom-select-option" data-value="m">Meter</div>
-                <div class="custom-select-option" data-value="km">Kilometer</div>
-                <div class="custom-select-option" data-value="in">Inch</div>
-                <div class="custom-select-option selected" data-value="ft">Feet</div>
-                <div class="custom-select-option" data-value="yd">Yard</div>
-                <div class="custom-select-option" data-value="mi">Mile</div>
-              </div>
-            </div>
+            <select class="converter-select" id="lengthToUnit" onchange="convertLength()">
+              <option value="mm">Millimeter</option>
+              <option value="cm">Centimeter</option>
+              <option value="m">Meter</option>
+              <option value="km">Kilometer</option>
+              <option value="in">Inch</option>
+              <option value="ft" selected>Feet</option>
+              <option value="yd">Yard</option>
+              <option value="mi">Mile</option>
+            </select>
           </div>
         </div>
       </div>
@@ -722,21 +644,15 @@ body {
           <div class="converter-field-label">From</div>
           <div class="converter-input-group">
             <input type="number" class="converter-input" id="weightFrom" placeholder="Enter value" oninput="convertWeight()">
-            <div class="custom-select" id="weightFromUnit" data-value="kg">
-              <div class="custom-select-trigger">
-                <span class="label">Kilogram</span>
-                <span class="material-icons">expand_more</span>
-              </div>
-              <div class="custom-select-dropdown">
-                <div class="custom-select-option" data-value="mg">Milligram</div>
-                <div class="custom-select-option" data-value="g">Gram</div>
-                <div class="custom-select-option selected" data-value="kg">Kilogram</div>
-                <div class="custom-select-option" data-value="ton">Metric Ton</div>
-                <div class="custom-select-option" data-value="oz">Ounce</div>
-                <div class="custom-select-option" data-value="lb">Pound</div>
-                <div class="custom-select-option" data-value="stone">Stone</div>
-              </div>
-            </div>
+            <select class="converter-select" id="weightFromUnit" onchange="convertWeight()">
+              <option value="mg">Milligram</option>
+              <option value="g">Gram</option>
+              <option value="kg" selected>Kilogram</option>
+              <option value="ton">Metric Ton</option>
+              <option value="oz">Ounce</option>
+              <option value="lb">Pound</option>
+              <option value="stone">Stone</option>
+            </select>
           </div>
         </div>
         <div class="converter-swap-btn">
@@ -748,21 +664,15 @@ body {
           <div class="converter-field-label">To</div>
           <div class="converter-input-group">
             <input type="number" class="converter-input" id="weightTo" placeholder="Result" readonly>
-            <div class="custom-select" id="weightToUnit" data-value="lb">
-              <div class="custom-select-trigger">
-                <span class="label">Pound</span>
-                <span class="material-icons">expand_more</span>
-              </div>
-              <div class="custom-select-dropdown">
-                <div class="custom-select-option" data-value="mg">Milligram</div>
-                <div class="custom-select-option" data-value="g">Gram</div>
-                <div class="custom-select-option" data-value="kg">Kilogram</div>
-                <div class="custom-select-option" data-value="ton">Metric Ton</div>
-                <div class="custom-select-option" data-value="oz">Ounce</div>
-                <div class="custom-select-option selected" data-value="lb">Pound</div>
-                <div class="custom-select-option" data-value="stone">Stone</div>
-              </div>
-            </div>
+            <select class="converter-select" id="weightToUnit" onchange="convertWeight()">
+              <option value="mg">Milligram</option>
+              <option value="g">Gram</option>
+              <option value="kg">Kilogram</option>
+              <option value="ton">Metric Ton</option>
+              <option value="oz">Ounce</option>
+              <option value="lb" selected>Pound</option>
+              <option value="stone">Stone</option>
+            </select>
           </div>
         </div>
       </div>
@@ -779,17 +689,11 @@ body {
           <div class="converter-field-label">From</div>
           <div class="converter-input-group">
             <input type="number" class="converter-input" id="tempFrom" placeholder="Enter value" oninput="convertTemperature()">
-            <div class="custom-select" id="tempFromUnit" data-value="c">
-              <div class="custom-select-trigger">
-                <span class="label">Celsius</span>
-                <span class="material-icons">expand_more</span>
-              </div>
-              <div class="custom-select-dropdown">
-                <div class="custom-select-option selected" data-value="c">Celsius</div>
-                <div class="custom-select-option" data-value="f">Fahrenheit</div>
-                <div class="custom-select-option" data-value="k">Kelvin</div>
-              </div>
-            </div>
+            <select class="converter-select" id="tempFromUnit" onchange="convertTemperature()">
+              <option value="c" selected>Celsius</option>
+              <option value="f">Fahrenheit</option>
+              <option value="k">Kelvin</option>
+            </select>
           </div>
         </div>
         <div class="converter-swap-btn">
@@ -801,17 +705,11 @@ body {
           <div class="converter-field-label">To</div>
           <div class="converter-input-group">
             <input type="number" class="converter-input" id="tempTo" placeholder="Result" readonly>
-            <div class="custom-select" id="tempToUnit" data-value="f">
-              <div class="custom-select-trigger">
-                <span class="label">Fahrenheit</span>
-                <span class="material-icons">expand_more</span>
-              </div>
-              <div class="custom-select-dropdown">
-                <div class="custom-select-option" data-value="c">Celsius</div>
-                <div class="custom-select-option selected" data-value="f">Fahrenheit</div>
-                <div class="custom-select-option" data-value="k">Kelvin</div>
-              </div>
-            </div>
+            <select class="converter-select" id="tempToUnit" onchange="convertTemperature()">
+              <option value="c">Celsius</option>
+              <option value="f" selected>Fahrenheit</option>
+              <option value="k">Kelvin</option>
+            </select>
           </div>
         </div>
       </div>
@@ -828,22 +726,16 @@ body {
           <div class="converter-field-label">From</div>
           <div class="converter-input-group">
             <input type="number" class="converter-input" id="currencyFrom" placeholder="Enter value" oninput="convertCurrency()">
-            <div class="custom-select" id="currencyFromUnit" data-value="USD">
-              <div class="custom-select-trigger">
-                <span class="label">USD</span>
-                <span class="material-icons">expand_more</span>
-              </div>
-              <div class="custom-select-dropdown">
-                <div class="custom-select-option selected" data-value="USD">USD</div>
-                <div class="custom-select-option" data-value="EUR">EUR</div>
-                <div class="custom-select-option" data-value="GBP">GBP</div>
-                <div class="custom-select-option" data-value="INR">INR</div>
-                <div class="custom-select-option" data-value="JPY">JPY</div>
-                <div class="custom-select-option" data-value="CAD">CAD</div>
-                <div class="custom-select-option" data-value="AUD">AUD</div>
-                <div class="custom-select-option" data-value="CNY">CNY</div>
-              </div>
-            </div>
+            <select class="converter-select" id="currencyFromUnit" onchange="convertCurrency()">
+              <option value="USD" selected>USD</option>
+              <option value="EUR">EUR</option>
+              <option value="GBP">GBP</option>
+              <option value="INR">INR</option>
+              <option value="JPY">JPY</option>
+              <option value="CAD">CAD</option>
+              <option value="AUD">AUD</option>
+              <option value="CNY">CNY</option>
+            </select>
           </div>
         </div>
         <div class="converter-swap-btn">
@@ -855,22 +747,16 @@ body {
           <div class="converter-field-label">To</div>
           <div class="converter-input-group">
             <input type="number" class="converter-input" id="currencyTo" placeholder="Result" readonly>
-            <div class="custom-select" id="currencyToUnit" data-value="INR">
-              <div class="custom-select-trigger">
-                <span class="label">INR</span>
-                <span class="material-icons">expand_more</span>
-              </div>
-              <div class="custom-select-dropdown">
-                <div class="custom-select-option" data-value="USD">USD</div>
-                <div class="custom-select-option" data-value="EUR">EUR</div>
-                <div class="custom-select-option" data-value="GBP">GBP</div>
-                <div class="custom-select-option selected" data-value="INR">INR</div>
-                <div class="custom-select-option" data-value="JPY">JPY</div>
-                <div class="custom-select-option" data-value="CAD">CAD</div>
-                <div class="custom-select-option" data-value="AUD">AUD</div>
-                <div class="custom-select-option" data-value="CNY">CNY</div>
-              </div>
-            </div>
+            <select class="converter-select" id="currencyToUnit" onchange="convertCurrency()">
+              <option value="USD">USD</option>
+              <option value="EUR">EUR</option>
+              <option value="GBP">GBP</option>
+              <option value="INR" selected>INR</option>
+              <option value="JPY">JPY</option>
+              <option value="CAD">CAD</option>
+              <option value="AUD">AUD</option>
+              <option value="CNY">CNY</option>
+            </select>
           </div>
         </div>
       </div>
@@ -887,20 +773,14 @@ body {
           <div class="converter-field-label">From</div>
           <div class="converter-input-group">
             <input type="number" class="converter-input" id="dataFrom" placeholder="Enter value" oninput="convertData()">
-            <div class="custom-select" id="dataFromUnit" data-value="kb">
-              <div class="custom-select-trigger">
-                <span class="label">Kilobyte</span>
-                <span class="material-icons">expand_more</span>
-              </div>
-              <div class="custom-select-dropdown">
-                <div class="custom-select-option" data-value="bit">Bit</div>
-                <div class="custom-select-option" data-value="byte">Byte</div>
-                <div class="custom-select-option selected" data-value="kb">Kilobyte</div>
-                <div class="custom-select-option" data-value="mb">Megabyte</div>
-                <div class="custom-select-option" data-value="gb">Gigabyte</div>
-                <div class="custom-select-option" data-value="tb">Terabyte</div>
-              </div>
-            </div>
+            <select class="converter-select" id="dataFromUnit" onchange="convertData()">
+              <option value="bit">Bit</option>
+              <option value="byte">Byte</option>
+              <option value="kb" selected>Kilobyte</option>
+              <option value="mb">Megabyte</option>
+              <option value="gb">Gigabyte</option>
+              <option value="tb">Terabyte</option>
+            </select>
           </div>
         </div>
         <div class="converter-swap-btn">
@@ -912,20 +792,14 @@ body {
           <div class="converter-field-label">To</div>
           <div class="converter-input-group">
             <input type="number" class="converter-input" id="dataTo" placeholder="Result" readonly>
-            <div class="custom-select" id="dataToUnit" data-value="mb">
-              <div class="custom-select-trigger">
-                <span class="label">Megabyte</span>
-                <span class="material-icons">expand_more</span>
-              </div>
-              <div class="custom-select-dropdown">
-                <div class="custom-select-option" data-value="bit">Bit</div>
-                <div class="custom-select-option" data-value="byte">Byte</div>
-                <div class="custom-select-option" data-value="kb">Kilobyte</div>
-                <div class="custom-select-option selected" data-value="mb">Megabyte</div>
-                <div class="custom-select-option" data-value="gb">Gigabyte</div>
-                <div class="custom-select-option" data-value="tb">Terabyte</div>
-              </div>
-            </div>
+            <select class="converter-select" id="dataToUnit" onchange="convertData()">
+              <option value="bit">Bit</option>
+              <option value="byte">Byte</option>
+              <option value="kb">Kilobyte</option>
+              <option value="mb" selected>Megabyte</option>
+              <option value="gb">Gigabyte</option>
+              <option value="tb">Terabyte</option>
+            </select>
           </div>
         </div>
       </div>
@@ -942,22 +816,16 @@ body {
           <div class="converter-field-label">From</div>
           <div class="converter-input-group">
             <input type="number" class="converter-input" id="timeFrom" placeholder="Enter value" oninput="convertTime()">
-            <div class="custom-select" id="timeFromUnit" data-value="s">
-              <div class="custom-select-trigger">
-                <span class="label">Second</span>
-                <span class="material-icons">expand_more</span>
-              </div>
-              <div class="custom-select-dropdown">
-                <div class="custom-select-option" data-value="ms">Millisecond</div>
-                <div class="custom-select-option selected" data-value="s">Second</div>
-                <div class="custom-select-option" data-value="min">Minute</div>
-                <div class="custom-select-option" data-value="hr">Hour</div>
-                <div class="custom-select-option" data-value="day">Day</div>
-                <div class="custom-select-option" data-value="week">Week</div>
-                <div class="custom-select-option" data-value="month">Month</div>
-                <div class="custom-select-option" data-value="year">Year</div>
-              </div>
-            </div>
+            <select class="converter-select" id="timeFromUnit" onchange="convertTime()">
+              <option value="ms">Millisecond</option>
+              <option value="s" selected>Second</option>
+              <option value="min">Minute</option>
+              <option value="hr">Hour</option>
+              <option value="day">Day</option>
+              <option value="week">Week</option>
+              <option value="month">Month</option>
+              <option value="year">Year</option>
+            </select>
           </div>
         </div>
         <div class="converter-swap-btn">
@@ -969,22 +837,16 @@ body {
           <div class="converter-field-label">To</div>
           <div class="converter-input-group">
             <input type="number" class="converter-input" id="timeTo" placeholder="Result" readonly>
-            <div class="custom-select" id="timeToUnit" data-value="hr">
-              <div class="custom-select-trigger">
-                <span class="label">Hour</span>
-                <span class="material-icons">expand_more</span>
-              </div>
-              <div class="custom-select-dropdown">
-                <div class="custom-select-option" data-value="ms">Millisecond</div>
-                <div class="custom-select-option" data-value="s">Second</div>
-                <div class="custom-select-option" data-value="min">Minute</div>
-                <div class="custom-select-option selected" data-value="hr">Hour</div>
-                <div class="custom-select-option" data-value="day">Day</div>
-                <div class="custom-select-option" data-value="week">Week</div>
-                <div class="custom-select-option" data-value="month">Month</div>
-                <div class="custom-select-option" data-value="year">Year</div>
-              </div>
-            </div>
+            <select class="converter-select" id="timeToUnit" onchange="convertTime()">
+              <option value="ms">Millisecond</option>
+              <option value="s">Second</option>
+              <option value="min">Minute</option>
+              <option value="hr" selected>Hour</option>
+              <option value="day">Day</option>
+              <option value="week">Week</option>
+              <option value="month">Month</option>
+              <option value="year">Year</option>
+            </select>
           </div>
         </div>
       </div>
@@ -1350,65 +1212,6 @@ function showToast(message) {
   setTimeout(() => toast.classList.remove('active'), 2000);
 }
 
-// Custom Select using event delegation
-document.addEventListener('click', function(e) {
-  // Handle trigger click
-  const trigger = e.target.closest('.custom-select-trigger');
-  if (trigger) {
-    const select = trigger.parentElement;
-    const isOpen = select.classList.contains('open');
-    
-    // Close all selects
-    document.querySelectorAll('.custom-select').forEach(s => s.classList.remove('open'));
-    
-    // Toggle current
-    if (!isOpen) {
-      select.classList.add('open');
-      positionDropdown(select);
-    }
-    return;
-  }
-  
-  // Handle option click
-  const option = e.target.closest('.custom-select-option');
-  if (option) {
-    const select = option.closest('.custom-select');
-    const value = option.dataset.value;
-    const label = option.textContent;
-    
-    // Update select value
-    select.dataset.value = value;
-    select.querySelector('.label').textContent = label;
-    
-    // Update selected state
-    select.querySelectorAll('.custom-select-option').forEach(opt => opt.classList.remove('selected'));
-    option.classList.add('selected');
-    
-    // Close dropdown
-    select.classList.remove('open');
-    
-    // Trigger conversion
-    const converterType = select.id.replace('FromUnit', '').replace('ToUnit', '');
-    window['convert' + converterType.charAt(0).toUpperCase() + converterType.slice(1)]();
-    return;
-  }
-  
-  // Close all selects when clicking outside
-  if (!e.target.closest('.custom-select')) {
-    document.querySelectorAll('.custom-select').forEach(s => s.classList.remove('open'));
-  }
-});
-
-function positionDropdown(select) {
-  const trigger = select.querySelector('.custom-select-trigger');
-  const dropdown = select.querySelector('.custom-select-dropdown');
-  const rect = trigger.getBoundingClientRect();
-  
-  dropdown.style.top = (rect.bottom + window.scrollY) + 'px';
-  dropdown.style.left = rect.left + 'px';
-  dropdown.style.width = rect.width + 'px';
-}
-
 function swapUnits(type) {
   const fromVal = document.getElementById(type + 'From').value;
   const toVal = document.getElementById(type + 'To').value;
@@ -1417,32 +1220,21 @@ function swapUnits(type) {
   
   const fromSelect = document.getElementById(type + 'FromUnit');
   const toSelect = document.getElementById(type + 'ToUnit');
-  const fromValue = fromSelect.dataset.value;
-  const fromLabel = fromSelect.querySelector('.label').textContent;
-  const toValue = toSelect.dataset.value;
-  const toLabel = toSelect.querySelector('.label').textContent;
+  const fromValue = fromSelect.value;
+  const fromText = fromSelect.options[fromSelect.selectedIndex].text;
+  const toValue = toSelect.value;
+  const toText = toSelect.options[toSelect.selectedIndex].text;
   
-  fromSelect.dataset.value = toValue;
-  fromSelect.querySelector('.label').textContent = toLabel;
-  toSelect.dataset.value = fromValue;
-  toSelect.querySelector('.label').textContent = fromLabel;
-  
-  fromSelect.querySelectorAll('.custom-select-option').forEach(opt => {
-    opt.classList.remove('selected');
-    if (opt.dataset.value === toValue) opt.classList.add('selected');
-  });
-  toSelect.querySelectorAll('.custom-select-option').forEach(opt => {
-    opt.classList.remove('selected');
-    if (opt.dataset.value === fromValue) opt.classList.add('selected');
-  });
+  fromSelect.value = toValue;
+  toSelect.value = fromValue;
   
   window['convert' + type.charAt(0).toUpperCase() + type.slice(1)]();
 }
 
 function convertLength() {
   const val = parseFloat(document.getElementById('lengthFrom').value) || 0;
-  const from = document.getElementById('lengthFromUnit').dataset.value;
-  const to = document.getElementById('lengthToUnit').dataset.value;
+  const from = document.getElementById('lengthFromUnit').value;
+  const to = document.getElementById('lengthToUnit').value;
   const toMeters = { mm: 0.001, cm: 0.01, m: 1, km: 1000, in: 0.0254, ft: 0.3048, yd: 0.9144, mi: 1609.344 };
   const result = val * toMeters[from] / toMeters[to];
   document.getElementById('lengthTo').value = parseFloat(result.toPrecision(10));
@@ -1450,8 +1242,8 @@ function convertLength() {
 
 function convertWeight() {
   const val = parseFloat(document.getElementById('weightFrom').value) || 0;
-  const from = document.getElementById('weightFromUnit').dataset.value;
-  const to = document.getElementById('weightToUnit').dataset.value;
+  const from = document.getElementById('weightFromUnit').value;
+  const to = document.getElementById('weightToUnit').value;
   const toGrams = { mg: 0.001, g: 1, kg: 1000, ton: 1000000, oz: 28.3495, lb: 453.592, stone: 6350.29 };
   const result = val * toGrams[from] / toGrams[to];
   document.getElementById('weightTo').value = parseFloat(result.toPrecision(10));
@@ -1459,8 +1251,8 @@ function convertWeight() {
 
 function convertTemperature() {
   const val = parseFloat(document.getElementById('tempFrom').value) || 0;
-  const from = document.getElementById('tempFromUnit').dataset.value;
-  const to = document.getElementById('tempToUnit').dataset.value;
+  const from = document.getElementById('tempFromUnit').value;
+  const to = document.getElementById('tempToUnit').value;
   let celsius;
   if (from === 'c') celsius = val;
   else if (from === 'f') celsius = (val - 32) * 5/9;
@@ -1474,8 +1266,8 @@ function convertTemperature() {
 
 function convertCurrency() {
   const val = parseFloat(document.getElementById('currencyFrom').value) || 0;
-  const from = document.getElementById('currencyFromUnit').dataset.value;
-  const to = document.getElementById('currencyToUnit').dataset.value;
+  const from = document.getElementById('currencyFromUnit').value;
+  const to = document.getElementById('currencyToUnit').value;
   const toUSD = { USD: 1, EUR: 1.09, GBP: 1.27, INR: 0.012, JPY: 0.0067, CAD: 0.74, AUD: 0.65, CNY: 0.14 };
   const result = val * toUSD[from] / toUSD[to];
   document.getElementById('currencyTo').value = parseFloat(result.toPrecision(10));
@@ -1483,8 +1275,8 @@ function convertCurrency() {
 
 function convertData() {
   const val = parseFloat(document.getElementById('dataFrom').value) || 0;
-  const from = document.getElementById('dataFromUnit').dataset.value;
-  const to = document.getElementById('dataToUnit').dataset.value;
+  const from = document.getElementById('dataFromUnit').value;
+  const to = document.getElementById('dataToUnit').value;
   const toBytes = { bit: 0.125, byte: 1, kb: 1024, mb: 1048576, gb: 1073741824, tb: 1099511627776 };
   const result = val * toBytes[from] / toBytes[to];
   document.getElementById('dataTo').value = parseFloat(result.toPrecision(10));
@@ -1492,8 +1284,8 @@ function convertData() {
 
 function convertTime() {
   const val = parseFloat(document.getElementById('timeFrom').value) || 0;
-  const from = document.getElementById('timeFromUnit').dataset.value;
-  const to = document.getElementById('timeToUnit').dataset.value;
+  const from = document.getElementById('timeFromUnit').value;
+  const to = document.getElementById('timeToUnit').value;
   const toSeconds = { ms: 0.001, s: 1, min: 60, hr: 3600, day: 86400, week: 604800, month: 2592000, year: 31536000 };
   const result = val * toSeconds[from] / toSeconds[to];
   document.getElementById('timeTo').value = parseFloat(result.toPrecision(10));
