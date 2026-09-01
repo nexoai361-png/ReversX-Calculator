@@ -6,8 +6,8 @@
 <meta name="theme-color" content="#1e1e1e">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<title>VS Code Calculator</title>
-<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<title>VS Code Calculator Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <style>
 * {
@@ -37,6 +37,55 @@
   --bottom-nav-height: 56px;
   --radius: 4px;
   --radius-lg: 8px;
+  --font-mono: 'Fira Code', monospace;
+}
+
+body.theme-light {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f3f3f3;
+  --bg-tertiary: #e5e5e5;
+  --bg-hover: #d0d0d0;
+  --bg-active: #0060c0;
+  --bg-input: #ffffff;
+  --text-primary: #333333;
+  --text-secondary: #666666;
+  --text-active: #000000;
+  --accent: #007acc;
+  --accent-hover: #005a9e;
+  --border: #cccccc;
+  --border-focus: #007acc;
+}
+
+body.theme-monokai {
+  --bg-primary: #272822;
+  --bg-secondary: #1e1f1c;
+  --bg-tertiary: #3e3d32;
+  --bg-hover: #49483e;
+  --bg-active: #a6e22e;
+  --bg-input: #3e3d32;
+  --text-primary: #f8f8f2;
+  --text-secondary: #75715e;
+  --text-active: #f92672;
+  --accent: #f92672;
+  --accent-hover: #ff4689;
+  --border: #49483e;
+  --border-focus: #a6e22e;
+}
+
+body.theme-onedark {
+  --bg-primary: #282c34;
+  --bg-secondary: #21252b;
+  --bg-tertiary: #21252b;
+  --bg-hover: #3e4451;
+  --bg-active: #61afef;
+  --bg-input: #1b1d23;
+  --text-primary: #abb2bf;
+  --text-secondary: #5c6370;
+  --text-active: #61afef;
+  --accent: #61afef;
+  --accent-hover: #4fa0e0;
+  --border: #3b4048;
+  --border-focus: #61afef;
 }
 
 body {
@@ -149,12 +198,31 @@ body {
 
 .calc-display {
   background: var(--bg-secondary);
-  padding: 24px 20px 20px;
+  padding: 20px 20px 16px;
   min-height: 120px;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   align-items: flex-end;
+  position: relative;
+}
+
+.calc-history-btn {
+  position: absolute;
+  top: 12px;
+  left: 16px;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+}
+
+.calc-history-btn:active {
+  color: var(--accent);
 }
 
 .calc-history {
@@ -222,7 +290,7 @@ body {
 }
 
 .calc-btn-number {
-  background: #3a3a3a;
+  background: var(--bg-input);
 }
 
 .calc-btn-operator {
@@ -253,6 +321,144 @@ body {
   grid-column: span 2;
 }
 
+/* History Log Panel */
+.history-drawer {
+  position: fixed;
+  top: var(--header-height);
+  left: 0;
+  right: 0;
+  bottom: var(--bottom-nav-height);
+  background: var(--bg-secondary);
+  z-index: 500;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.history-drawer.active {
+  transform: translateY(0);
+}
+
+.history-header {
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-tertiary);
+}
+
+.history-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-active);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.history-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.history-action-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.history-action-btn:active {
+  color: var(--accent);
+}
+
+.history-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 16px;
+}
+
+.history-item {
+  padding: 12px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.1s;
+  border-radius: var(--radius);
+}
+
+.history-item:active {
+  background: var(--bg-hover);
+}
+
+.history-item-exp {
+  font-size: 13px;
+  color: var(--text-secondary);
+  text-align: right;
+  margin-bottom: 4px;
+}
+
+.history-item-res {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-active);
+  text-align: right;
+}
+
+.history-empty {
+  text-align: center;
+  color: var(--text-secondary);
+  margin-top: 40px;
+  font-size: 14px;
+}
+
+/* Programmer Calculator */
+.programmer-card {
+  background: var(--bg-secondary);
+  margin: 12px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  padding: 16px;
+}
+
+.base-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border-radius: var(--radius);
+  margin-bottom: 6px;
+  background: var(--bg-primary);
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+.base-row.active {
+  border-color: var(--accent);
+  background: var(--bg-tertiary);
+}
+
+.base-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  width: 45px;
+}
+
+.base-val {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  color: var(--text-active);
+  text-align: right;
+  word-break: break-all;
+}
+
+/* Tools Grid */
 .tools-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -264,13 +470,13 @@ body {
   background: var(--bg-secondary);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  padding: 20px 16px;
+  padding: 16px;
   cursor: pointer;
   transition: all 0.2s;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .tool-card:active {
@@ -280,8 +486,8 @@ body {
 }
 
 .tool-card-icon {
-  width: 48px;
-  height: 48px;
+  width: 44px;
+  height: 44px;
   border-radius: 12px;
   background: var(--accent-muted);
   display: flex;
@@ -290,22 +496,22 @@ body {
 }
 
 .tool-card-icon .material-icons {
-  font-size: 24px;
+  font-size: 22px;
   color: var(--accent);
 }
 
 .tool-card-title {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
   color: var(--text-active);
   text-align: center;
 }
 
 .tool-card-desc {
-  font-size: 11px;
+  font-size: 10px;
   color: var(--text-secondary);
   text-align: center;
-  line-height: 1.4;
+  line-height: 1.3;
 }
 
 .converter-section {
@@ -469,6 +675,32 @@ body {
   font-size: 20px;
 }
 
+.theme-options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.theme-btn {
+  padding: 12px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.theme-btn.active {
+  border-color: var(--accent);
+  background: var(--bg-tertiary);
+  color: var(--text-active);
+}
+
 .menu-overlay {
   position: fixed;
   top: 0;
@@ -607,8 +839,13 @@ body {
 
 <div class="content" id="content">
 
+  <!-- CALCULATOR PAGE -->
   <div class="page active" id="page-calculator">
     <div class="calc-display">
+      <button class="calc-history-btn" onclick="toggleHistoryDrawer()">
+        <span class="material-icons" style="font-size: 16px;">history</span>
+        <span>History</span>
+      </button>
       <div class="calc-history" id="calcHistory"></div>
       <div class="calc-expression" id="calcExpression">&nbsp;</div>
       <div class="calc-result" id="calcResult">0</div>
@@ -659,354 +896,335 @@ body {
     </div>
   </div>
 
+  <!-- PROGRAMMER / BASE CONVERTER PAGE -->
+  <div class="page" id="page-programmer">
+    <div class="programmer-card">
+      <div class="base-row active" id="base-HEX">
+        <span class="base-label">HEX</span>
+        <span class="base-val" id="val-HEX">0</span>
+      </div>
+      <div class="base-row" id="base-DEC">
+        <span class="base-label">DEC</span>
+        <span class="base-val" id="val-DEC">0</span>
+      </div>
+      <div class="base-row" id="base-OCT">
+        <span class="base-label">OCT</span>
+        <span class="base-val" id="val-OCT">0</span>
+      </div>
+      <div class="base-row" id="base-BIN">
+        <span class="base-label">BIN</span>
+        <span class="base-val" id="val-BIN">0</span>
+      </div>
+    </div>
+
+    <div class="calc-buttons" style="padding: 12px;">
+      <button class="calc-btn calc-btn-function" onclick="progAppend('A')">A</button>
+      <button class="calc-btn calc-btn-function" onclick="progAppend('B')">B</button>
+      <button class="calc-btn calc-btn-clear" onclick="progClear()">AC</button>
+      <button class="calc-btn calc-btn-clear" onclick="progBackspace()"><span class="material-icons" style="font-size: 18px;">backspace</span></button>
+
+      <button class="calc-btn calc-btn-function" onclick="progAppend('C')">C</button>
+      <button class="calc-btn calc-btn-function" onclick="progAppend('D')">D</button>
+      <button class="calc-btn calc-btn-number" onclick="progAppend('7')">7</button>
+      <button class="calc-btn calc-btn-number" onclick="progAppend('8')">8</button>
+
+      <button class="calc-btn calc-btn-function" onclick="progAppend('E')">E</button>
+      <button class="calc-btn calc-btn-function" onclick="progAppend('F')">F</button>
+      <button class="calc-btn calc-btn-number" onclick="progAppend('4')">4</button>
+      <button class="calc-btn calc-btn-number" onclick="progAppend('5')">5</button>
+
+      <button class="calc-btn calc-btn-number" onclick="progAppend('1')">1</button>
+      <button class="calc-btn calc-btn-number" onclick="progAppend('2')">2</button>
+      <button class="calc-btn calc-btn-number" onclick="progAppend('3')">3</button>
+      <button class="calc-btn calc-btn-number" onclick="progAppend('6')">6</button>
+
+      <button class="calc-btn calc-btn-number calc-btn-zero" onclick="progAppend('0')">0</button>
+      <button class="calc-btn calc-btn-number" onclick="progAppend('9')">9</button>
+      <button class="calc-btn calc-btn-equals" onclick="showToast('Live Updated!')">&#x2713;</button>
+    </div>
+  </div>
+
+  <!-- CONVERTERS PAGE -->
   <div class="page" id="page-converters">
     <div id="toolsGrid">
       <div class="tools-grid">
         <div class="tool-card" onclick="openConverter('length')">
-          <div class="tool-card-icon">
-            <span class="material-icons">straighten</span>
-          </div>
+          <div class="tool-card-icon"><span class="material-icons">straighten</span></div>
           <div class="tool-card-title">Length</div>
           <div class="tool-card-desc">mm, cm, m, km, ft, mi</div>
         </div>
         <div class="tool-card" onclick="openConverter('weight')">
-          <div class="tool-card-icon">
-            <span class="material-icons">fitness_center</span>
-          </div>
+          <div class="tool-card-icon"><span class="material-icons">fitness_center</span></div>
           <div class="tool-card-title">Weight</div>
           <div class="tool-card-desc">mg, g, kg, lb, oz</div>
         </div>
         <div class="tool-card" onclick="openConverter('temperature')">
-          <div class="tool-card-icon">
-            <span class="material-icons">thermostat</span>
-          </div>
+          <div class="tool-card-icon"><span class="material-icons">thermostat</span></div>
           <div class="tool-card-title">Temperature</div>
           <div class="tool-card-desc">Celsius, Fahrenheit, Kelvin</div>
         </div>
         <div class="tool-card" onclick="openConverter('currency')">
-          <div class="tool-card-icon">
-            <span class="material-icons">attach_money</span>
-          </div>
+          <div class="tool-card-icon"><span class="material-icons">attach_money</span></div>
           <div class="tool-card-title">Currency</div>
           <div class="tool-card-desc">USD, EUR, GBP, INR</div>
         </div>
+        <div class="tool-card" onclick="openConverter('area')">
+          <div class="tool-card-icon"><span class="material-icons">crop_square</span></div>
+          <div class="tool-card-title">Area</div>
+          <div class="tool-card-desc">sq m, sq ft, Acre, Hectare</div>
+        </div>
+        <div class="tool-card" onclick="openConverter('speed')">
+          <div class="tool-card-icon"><span class="material-icons">speed</span></div>
+          <div class="tool-card-title">Speed</div>
+          <div class="tool-card-desc">m/s, km/h, mph, Knot</div>
+        </div>
+        <div class="tool-card" onclick="openConverter('volume')">
+          <div class="tool-card-icon"><span class="material-icons">local_drink</span></div>
+          <div class="tool-card-title">Volume</div>
+          <div class="tool-card-desc">mL, Liter, Gallon, Cup</div>
+        </div>
+        <div class="tool-card" onclick="openConverter('energy')">
+          <div class="tool-card-icon"><span class="material-icons">bolt</span></div>
+          <div class="tool-card-title">Energy</div>
+          <div class="tool-card-desc">Joule, kJ, Calorie, kWh</div>
+        </div>
+        <div class="tool-card" onclick="openConverter('pressure')">
+          <div class="tool-card-icon"><span class="material-icons">compress</span></div>
+          <div class="tool-card-title">Pressure</div>
+          <div class="tool-card-desc">Pascal, Bar, PSI, Atm</div>
+        </div>
+        <div class="tool-card" onclick="openConverter('fuel')">
+          <div class="tool-card-icon"><span class="material-icons">directions_car</span></div>
+          <div class="tool-card-title">Fuel Economy</div>
+          <div class="tool-card-desc">MPG, L/100km, km/L</div>
+        </div>
         <div class="tool-card" onclick="openConverter('data')">
-          <div class="tool-card-icon">
-            <span class="material-icons">sd_storage</span>
-          </div>
+          <div class="tool-card-icon"><span class="material-icons">sd_storage</span></div>
           <div class="tool-card-title">Data Storage</div>
           <div class="tool-card-desc">KB, MB, GB, TB</div>
         </div>
         <div class="tool-card" onclick="openConverter('time')">
-          <div class="tool-card-icon">
-            <span class="material-icons">schedule</span>
-          </div>
+          <div class="tool-card-icon"><span class="material-icons">schedule</span></div>
           <div class="tool-card-title">Time</div>
           <div class="tool-card-desc">sec, min, hour, day, year</div>
         </div>
       </div>
     </div>
 
+    <!-- CONVERTER SECTIONS -->
     <div class="converter-section" id="section-length">
-      <div class="converter-back" onclick="closeConverter()">
-        <span class="material-icons">arrow_back</span>
-        <span>Back to Tools</span>
-      </div>
+      <div class="converter-back" onclick="closeConverter()"><span class="material-icons">arrow_back</span><span>Back to Tools</span></div>
       <div class="converter-card">
-        <div class="converter-card-header">
-          <span class="material-icons">straighten</span>
-          <span class="converter-card-title">Length Converter</span>
-        </div>
+        <div class="converter-card-header"><span class="material-icons">straighten</span><span class="converter-card-title">Length Converter</span></div>
         <div class="converter-card-body">
-          <div class="converter-field">
-            <div class="converter-field-label">From</div>
-            <div class="converter-input-group">
-              <input type="number" class="converter-input" id="lengthFrom" placeholder="Enter value" oninput="convertLength()">
-              <select class="converter-select" id="lengthFromUnit" onchange="convertLength()">
-                <option value="mm">Millimeter</option>
-                <option value="cm">Centimeter</option>
-                <option value="m" selected>Meter</option>
-                <option value="km">Kilometer</option>
-                <option value="in">Inch</option>
-                <option value="ft">Feet</option>
-                <option value="yd">Yard</option>
-                <option value="mi">Mile</option>
-              </select>
-            </div>
+          <div class="converter-field"><div class="converter-field-label">From</div>
+            <div class="converter-input-group"><input type="number" class="converter-input" id="lengthFrom" placeholder="Enter value" oninput="convertLength()"><select class="converter-select" id="lengthFromUnit" onchange="convertLength()"><option value="mm">Millimeter</option><option value="cm">Centimeter</option><option value="m" selected>Meter</option><option value="km">Kilometer</option><option value="in">Inch</option><option value="ft">Feet</option><option value="yd">Yard</option><option value="mi">Mile</option></select></div>
           </div>
-          <div class="converter-swap-btn">
-            <button onclick="swapUnits('length')">
-              <span class="material-icons">swap_vert</span>
-            </button>
-          </div>
-          <div class="converter-field">
-            <div class="converter-field-label">To</div>
-            <div class="converter-input-group">
-              <input type="number" class="converter-input" id="lengthTo" placeholder="Result" readonly>
-              <select class="converter-select" id="lengthToUnit" onchange="convertLength()">
-                <option value="mm">Millimeter</option>
-                <option value="cm">Centimeter</option>
-                <option value="m">Meter</option>
-                <option value="km">Kilometer</option>
-                <option value="in">Inch</option>
-                <option value="ft" selected>Feet</option>
-                <option value="yd">Yard</option>
-                <option value="mi">Mile</option>
-              </select>
-            </div>
+          <div class="converter-swap-btn"><button onclick="swapUnits('length')"><span class="material-icons">swap_vert</span></button></div>
+          <div class="converter-field"><div class="converter-field-label">To</div>
+            <div class="converter-input-group"><input type="number" class="converter-input" id="lengthTo" placeholder="Result" readonly><select class="converter-select" id="lengthToUnit" onchange="convertLength()"><option value="mm">Millimeter</option><option value="cm">Centimeter</option><option value="m">Meter</option><option value="km">Kilometer</option><option value="in">Inch</option><option value="ft" selected>Feet</option><option value="yd">Yard</option><option value="mi">Mile</option></select></div>
           </div>
         </div>
       </div>
     </div>
 
     <div class="converter-section" id="section-weight">
-      <div class="converter-back" onclick="closeConverter()">
-        <span class="material-icons">arrow_back</span>
-        <span>Back to Tools</span>
-      </div>
+      <div class="converter-back" onclick="closeConverter()"><span class="material-icons">arrow_back</span><span>Back to Tools</span></div>
       <div class="converter-card">
-        <div class="converter-card-header">
-          <span class="material-icons">fitness_center</span>
-          <span class="converter-card-title">Weight Converter</span>
-        </div>
+        <div class="converter-card-header"><span class="material-icons">fitness_center</span><span class="converter-card-title">Weight Converter</span></div>
         <div class="converter-card-body">
-          <div class="converter-field">
-            <div class="converter-field-label">From</div>
-            <div class="converter-input-group">
-              <input type="number" class="converter-input" id="weightFrom" placeholder="Enter value" oninput="convertWeight()">
-              <select class="converter-select" id="weightFromUnit" onchange="convertWeight()">
-                <option value="mg">Milligram</option>
-                <option value="g">Gram</option>
-                <option value="kg" selected>Kilogram</option>
-                <option value="ton">Metric Ton</option>
-                <option value="oz">Ounce</option>
-                <option value="lb">Pound</option>
-                <option value="stone">Stone</option>
-              </select>
-            </div>
+          <div class="converter-field"><div class="converter-field-label">From</div>
+            <div class="converter-input-group"><input type="number" class="converter-input" id="weightFrom" placeholder="Enter value" oninput="convertWeight()"><select class="converter-select" id="weightFromUnit" onchange="convertWeight()"><option value="mg">Milligram</option><option value="g">Gram</option><option value="kg" selected>Kilogram</option><option value="ton">Metric Ton</option><option value="oz">Ounce</option><option value="lb">Pound</option><option value="stone">Stone</option></select></div>
           </div>
-          <div class="converter-swap-btn">
-            <button onclick="swapUnits('weight')">
-              <span class="material-icons">swap_vert</span>
-            </button>
-          </div>
-          <div class="converter-field">
-            <div class="converter-field-label">To</div>
-            <div class="converter-input-group">
-              <input type="number" class="converter-input" id="weightTo" placeholder="Result" readonly>
-              <select class="converter-select" id="weightToUnit" onchange="convertWeight()">
-                <option value="mg">Milligram</option>
-                <option value="g">Gram</option>
-                <option value="kg">Kilogram</option>
-                <option value="ton">Metric Ton</option>
-                <option value="oz">Ounce</option>
-                <option value="lb" selected>Pound</option>
-                <option value="stone">Stone</option>
-              </select>
-            </div>
+          <div class="converter-swap-btn"><button onclick="swapUnits('weight')"><span class="material-icons">swap_vert</span></button></div>
+          <div class="converter-field"><div class="converter-field-label">To</div>
+            <div class="converter-input-group"><input type="number" class="converter-input" id="weightTo" placeholder="Result" readonly><select class="converter-select" id="weightToUnit" onchange="convertWeight()"><option value="mg">Milligram</option><option value="g">Gram</option><option value="kg">Kilogram</option><option value="ton">Metric Ton</option><option value="oz">Ounce</option><option value="lb" selected>Pound</option><option value="stone">Stone</option></select></div>
           </div>
         </div>
       </div>
     </div>
 
     <div class="converter-section" id="section-temperature">
-      <div class="converter-back" onclick="closeConverter()">
-        <span class="material-icons">arrow_back</span>
-        <span>Back to Tools</span>
-      </div>
+      <div class="converter-back" onclick="closeConverter()"><span class="material-icons">arrow_back</span><span>Back to Tools</span></div>
       <div class="converter-card">
-        <div class="converter-card-header">
-          <span class="material-icons">thermostat</span>
-          <span class="converter-card-title">Temperature Converter</span>
-        </div>
+        <div class="converter-card-header"><span class="material-icons">thermostat</span><span class="converter-card-title">Temperature Converter</span></div>
         <div class="converter-card-body">
-          <div class="converter-field">
-            <div class="converter-field-label">From</div>
-            <div class="converter-input-group">
-              <input type="number" class="converter-input" id="tempFrom" placeholder="Enter value" oninput="convertTemperature()">
-              <select class="converter-select" id="tempFromUnit" onchange="convertTemperature()">
-                <option value="c" selected>Celsius</option>
-                <option value="f">Fahrenheit</option>
-                <option value="k">Kelvin</option>
-              </select>
-            </div>
+          <div class="converter-field"><div class="converter-field-label">From</div>
+            <div class="converter-input-group"><input type="number" class="converter-input" id="tempFrom" placeholder="Enter value" oninput="convertTemperature()"><select class="converter-select" id="tempFromUnit" onchange="convertTemperature()"><option value="c" selected>Celsius</option><option value="f">Fahrenheit</option><option value="k">Kelvin</option></select></div>
           </div>
-          <div class="converter-swap-btn">
-            <button onclick="swapUnits('temp')">
-              <span class="material-icons">swap_vert</span>
-            </button>
-          </div>
-          <div class="converter-field">
-            <div class="converter-field-label">To</div>
-            <div class="converter-input-group">
-              <input type="number" class="converter-input" id="tempTo" placeholder="Result" readonly>
-              <select class="converter-select" id="tempToUnit" onchange="convertTemperature()">
-                <option value="c">Celsius</option>
-                <option value="f" selected>Fahrenheit</option>
-                <option value="k">Kelvin</option>
-              </select>
-            </div>
+          <div class="converter-swap-btn"><button onclick="swapUnits('temp')"><span class="material-icons">swap_vert</span></button></div>
+          <div class="converter-field"><div class="converter-field-label">To</div>
+            <div class="converter-input-group"><input type="number" class="converter-input" id="tempTo" placeholder="Result" readonly><select class="converter-select" id="tempToUnit" onchange="convertTemperature()"><option value="c">Celsius</option><option value="f" selected>Fahrenheit</option><option value="k">Kelvin</option></select></div>
           </div>
         </div>
       </div>
     </div>
 
     <div class="converter-section" id="section-currency">
-      <div class="converter-back" onclick="closeConverter()">
-        <span class="material-icons">arrow_back</span>
-        <span>Back to Tools</span>
-      </div>
+      <div class="converter-back" onclick="closeConverter()"><span class="material-icons">arrow_back</span><span>Back to Tools</span></div>
       <div class="converter-card">
-        <div class="converter-card-header">
-          <span class="material-icons">attach_money</span>
-          <span class="converter-card-title">Currency Converter</span>
-        </div>
+        <div class="converter-card-header"><span class="material-icons">attach_money</span><span class="converter-card-title">Currency Converter</span></div>
         <div class="converter-card-body">
-          <div class="converter-field">
-            <div class="converter-field-label">From</div>
-            <div class="converter-input-group">
-              <input type="number" class="converter-input" id="currencyFrom" placeholder="Enter value" oninput="convertCurrency()">
-              <select class="converter-select" id="currencyFromUnit" onchange="convertCurrency()">
-                <option value="USD" selected>USD</option>
-                <option value="EUR">EUR</option>
-                <option value="GBP">GBP</option>
-                <option value="INR">INR</option>
-                <option value="JPY">JPY</option>
-                <option value="CAD">CAD</option>
-                <option value="AUD">AUD</option>
-                <option value="CNY">CNY</option>
-              </select>
-            </div>
+          <div class="converter-field"><div class="converter-field-label">From</div>
+            <div class="converter-input-group"><input type="number" class="converter-input" id="currencyFrom" placeholder="Enter value" oninput="convertCurrency()"><select class="converter-select" id="currencyFromUnit" onchange="convertCurrency()"><option value="USD" selected>USD</option><option value="EUR">EUR</option><option value="GBP">GBP</option><option value="INR">INR</option><option value="JPY">JPY</option><option value="CAD">CAD</option><option value="AUD">AUD</option><option value="CNY">CNY</option></select></div>
           </div>
-          <div class="converter-swap-btn">
-            <button onclick="swapUnits('currency')">
-              <span class="material-icons">swap_vert</span>
-            </button>
+          <div class="converter-swap-btn"><button onclick="swapUnits('currency')"><span class="material-icons">swap_vert</span></button></div>
+          <div class="converter-field"><div class="converter-field-label">To</div>
+            <div class="converter-input-group"><input type="number" class="converter-input" id="currencyTo" placeholder="Result" readonly><select class="converter-select" id="currencyToUnit" onchange="convertCurrency()"><option value="USD">USD</option><option value="EUR">EUR</option><option value="GBP">GBP</option><option value="INR" selected>INR</option><option value="JPY">JPY</option><option value="CAD">CAD</option><option value="AUD">AUD</option><option value="CNY">CNY</option></select></div>
           </div>
-          <div class="converter-field">
-            <div class="converter-field-label">To</div>
-            <div class="converter-input-group">
-              <input type="number" class="converter-input" id="currencyTo" placeholder="Result" readonly>
-              <select class="converter-select" id="currencyToUnit" onchange="convertCurrency()">
-                <option value="USD">USD</option>
-                <option value="EUR">EUR</option>
-                <option value="GBP">GBP</option>
-                <option value="INR" selected>INR</option>
-                <option value="JPY">JPY</option>
-                <option value="CAD">CAD</option>
-                <option value="AUD">AUD</option>
-                <option value="CNY">CNY</option>
-              </select>
-            </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="converter-section" id="section-area">
+      <div class="converter-back" onclick="closeConverter()"><span class="material-icons">arrow_back</span><span>Back to Tools</span></div>
+      <div class="converter-card">
+        <div class="converter-card-header"><span class="material-icons">crop_square</span><span class="converter-card-title">Area Converter</span></div>
+        <div class="converter-card-body">
+          <div class="converter-field"><div class="converter-field-label">From</div>
+            <div class="converter-input-group"><input type="number" class="converter-input" id="areaFrom" placeholder="Enter value" oninput="convertArea()"><select class="converter-select" id="areaFromUnit" onchange="convertArea()"><option value="sqm" selected>Square Meter</option><option value="sqkm">Square Km</option><option value="sqft">Square Feet</option><option value="acre">Acre</option><option value="ha">Hectare</option></select></div>
+          </div>
+          <div class="converter-swap-btn"><button onclick="swapUnits('area')"><span class="material-icons">swap_vert</span></button></div>
+          <div class="converter-field"><div class="converter-field-label">To</div>
+            <div class="converter-input-group"><input type="number" class="converter-input" id="areaTo" placeholder="Result" readonly><select class="converter-select" id="areaToUnit" onchange="convertArea()"><option value="sqm">Square Meter</option><option value="sqkm">Square Km</option><option value="sqft" selected>Square Feet</option><option value="acre">Acre</option><option value="ha">Hectare</option></select></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="converter-section" id="section-speed">
+      <div class="converter-back" onclick="closeConverter()"><span class="material-icons">arrow_back</span><span>Back to Tools</span></div>
+      <div class="converter-card">
+        <div class="converter-card-header"><span class="material-icons">speed</span><span class="converter-card-title">Speed Converter</span></div>
+        <div class="converter-card-body">
+          <div class="converter-field"><div class="converter-field-label">From</div>
+            <div class="converter-input-group"><input type="number" class="converter-input" id="speedFrom" placeholder="Enter value" oninput="convertSpeed()"><select class="converter-select" id="speedFromUnit" onchange="convertSpeed()"><option value="kmh" selected>km/h</option><option value="ms">m/s</option><option value="mph">mph</option><option value="knot">Knot</option></select></div>
+          </div>
+          <div class="converter-swap-btn"><button onclick="swapUnits('speed')"><span class="material-icons">swap_vert</span></button></div>
+          <div class="converter-field"><div class="converter-field-label">To</div>
+            <div class="converter-input-group"><input type="number" class="converter-input" id="speedTo" placeholder="Result" readonly><select class="converter-select" id="speedToUnit" onchange="convertSpeed()"><option value="kmh">km/h</option><option value="ms">m/s</option><option value="mph" selected>mph</option><option value="knot">Knot</option></select></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="converter-section" id="section-volume">
+      <div class="converter-back" onclick="closeConverter()"><span class="material-icons">arrow_back</span><span>Back to Tools</span></div>
+      <div class="converter-card">
+        <div class="converter-card-header"><span class="material-icons">local_drink</span><span class="converter-card-title">Volume Converter</span></div>
+        <div class="converter-card-body">
+          <div class="converter-field"><div class="converter-field-label">From</div>
+            <div class="converter-input-group"><input type="number" class="converter-input" id="volumeFrom" placeholder="Enter value" oninput="convertVolume()"><select class="converter-select" id="volumeFromUnit" onchange="convertVolume()"><option value="ml">Milliliter</option><option value="l" selected>Liter</option><option value="gal">Gallon (US)</option><option value="cup">Cup</option></select></div>
+          </div>
+          <div class="converter-swap-btn"><button onclick="swapUnits('volume')"><span class="material-icons">swap_vert</span></button></div>
+          <div class="converter-field"><div class="converter-field-label">To</div>
+            <div class="converter-input-group"><input type="number" class="converter-input" id="volumeTo" placeholder="Result" readonly><select class="converter-select" id="volumeToUnit" onchange="convertVolume()"><option value="ml">Milliliter</option><option value="l">Liter</option><option value="gal" selected>Gallon (US)</option><option value="cup">Cup</option></select></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="converter-section" id="section-energy">
+      <div class="converter-back" onclick="closeConverter()"><span class="material-icons">arrow_back</span><span>Back to Tools</span></div>
+      <div class="converter-card">
+        <div class="converter-card-header"><span class="material-icons">bolt</span><span class="converter-card-title">Energy Converter</span></div>
+        <div class="converter-card-body">
+          <div class="converter-field"><div class="converter-field-label">From</div>
+            <div class="converter-input-group"><input type="number" class="converter-input" id="energyFrom" placeholder="Enter value" oninput="convertEnergy()"><select class="converter-select" id="energyFromUnit" onchange="convertEnergy()"><option value="j">Joule</option><option value="kj" selected>Kilojoule</option><option value="cal">Calorie</option><option value="kcal">Kilocalorie</option><option value="kwh">kWh</option></select></div>
+          </div>
+          <div class="converter-swap-btn"><button onclick="swapUnits('energy')"><span class="material-icons">swap_vert</span></button></div>
+          <div class="converter-field"><div class="converter-field-label">To</div>
+            <div class="converter-input-group"><input type="number" class="converter-input" id="energyTo" placeholder="Result" readonly><select class="converter-select" id="energyToUnit" onchange="convertEnergy()"><option value="j">Joule</option><option value="kj">Kilojoule</option><option value="cal">Calorie</option><option value="kcal" selected>Kilocalorie</option><option value="kwh">kWh</option></select></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="converter-section" id="section-pressure">
+      <div class="converter-back" onclick="closeConverter()"><span class="material-icons">arrow_back</span><span>Back to Tools</span></div>
+      <div class="converter-card">
+        <div class="converter-card-header"><span class="material-icons">compress</span><span class="converter-card-title">Pressure Converter</span></div>
+        <div class="converter-card-body">
+          <div class="converter-field"><div class="converter-field-label">From</div>
+            <div class="converter-input-group"><input type="number" class="converter-input" id="pressureFrom" placeholder="Enter value" oninput="convertPressure()"><select class="converter-select" id="pressureFromUnit" onchange="convertPressure()"><option value="pa">Pascal</option><option value="bar" selected>Bar</option><option value="psi">PSI</option><option value="atm">Atmosphere</option></select></div>
+          </div>
+          <div class="converter-swap-btn"><button onclick="swapUnits('pressure')"><span class="material-icons">swap_vert</span></button></div>
+          <div class="converter-field"><div class="converter-field-label">To</div>
+            <div class="converter-input-group"><input type="number" class="converter-input" id="pressureTo" placeholder="Result" readonly><select class="converter-select" id="pressureToUnit" onchange="convertPressure()"><option value="pa">Pascal</option><option value="bar">Bar</option><option value="psi" selected>PSI</option><option value="atm">Atmosphere</option></select></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="converter-section" id="section-fuel">
+      <div class="converter-back" onclick="closeConverter()"><span class="material-icons">arrow_back</span><span>Back to Tools</span></div>
+      <div class="converter-card">
+        <div class="converter-card-header"><span class="material-icons">directions_car</span><span class="converter-card-title">Fuel Economy</span></div>
+        <div class="converter-card-body">
+          <div class="converter-field"><div class="converter-field-label">From</div>
+            <div class="converter-input-group"><input type="number" class="converter-input" id="fuelFrom" placeholder="Enter value" oninput="convertFuel()"><select class="converter-select" id="fuelFromUnit" onchange="convertFuel()"><option value="mpg" selected>MPG (US)</option><option value="kml">km/L</option><option value="l100">L/100km</option></select></div>
+          </div>
+          <div class="converter-swap-btn"><button onclick="swapUnits('fuel')"><span class="material-icons">swap_vert</span></button></div>
+          <div class="converter-field"><div class="converter-field-label">To</div>
+            <div class="converter-input-group"><input type="number" class="converter-input" id="fuelTo" placeholder="Result" readonly><select class="converter-select" id="fuelToUnit" onchange="convertFuel()"><option value="mpg">MPG (US)</option><option value="kml" selected>km/L</option><option value="l100">L/100km</option></select></div>
           </div>
         </div>
       </div>
     </div>
 
     <div class="converter-section" id="section-data">
-      <div class="converter-back" onclick="closeConverter()">
-        <span class="material-icons">arrow_back</span>
-        <span>Back to Tools</span>
-      </div>
+      <div class="converter-back" onclick="closeConverter()"><span class="material-icons">arrow_back</span><span>Back to Tools</span></div>
       <div class="converter-card">
-        <div class="converter-card-header">
-          <span class="material-icons">sd_storage</span>
-          <span class="converter-card-title">Data Storage Converter</span>
-        </div>
+        <div class="converter-card-header"><span class="material-icons">sd_storage</span><span class="converter-card-title">Data Storage Converter</span></div>
         <div class="converter-card-body">
-          <div class="converter-field">
-            <div class="converter-field-label">From</div>
-            <div class="converter-input-group">
-              <input type="number" class="converter-input" id="dataFrom" placeholder="Enter value" oninput="convertData()">
-              <select class="converter-select" id="dataFromUnit" onchange="convertData()">
-                <option value="bit">Bit</option>
-                <option value="byte">Byte</option>
-                <option value="kb" selected>Kilobyte</option>
-                <option value="mb">Megabyte</option>
-                <option value="gb">Gigabyte</option>
-                <option value="tb">Terabyte</option>
-              </select>
-            </div>
+          <div class="converter-field"><div class="converter-field-label">From</div>
+            <div class="converter-input-group"><input type="number" class="converter-input" id="dataFrom" placeholder="Enter value" oninput="convertData()"><select class="converter-select" id="dataFromUnit" onchange="convertData()"><option value="bit">Bit</option><option value="byte">Byte</option><option value="kb" selected>Kilobyte</option><option value="mb">Megabyte</option><option value="gb">Gigabyte</option><option value="tb">Terabyte</option></select></div>
           </div>
-          <div class="converter-swap-btn">
-            <button onclick="swapUnits('data')">
-              <span class="material-icons">swap_vert</span>
-            </button>
-          </div>
-          <div class="converter-field">
-            <div class="converter-field-label">To</div>
-            <div class="converter-input-group">
-              <input type="number" class="converter-input" id="dataTo" placeholder="Result" readonly>
-              <select class="converter-select" id="dataToUnit" onchange="convertData()">
-                <option value="bit">Bit</option>
-                <option value="byte">Byte</option>
-                <option value="kb">Kilobyte</option>
-                <option value="mb" selected>Megabyte</option>
-                <option value="gb">Gigabyte</option>
-                <option value="tb">Terabyte</option>
-              </select>
-            </div>
+          <div class="converter-swap-btn"><button onclick="swapUnits('data')"><span class="material-icons">swap_vert</span></button></div>
+          <div class="converter-field"><div class="converter-field-label">To</div>
+            <div class="converter-input-group"><input type="number" class="converter-input" id="dataTo" placeholder="Result" readonly><select class="converter-select" id="dataToUnit" onchange="convertData()"><option value="bit">Bit</option><option value="byte">Byte</option><option value="kb">Kilobyte</option><option value="mb" selected>Megabyte</option><option value="gb">Gigabyte</option><option value="tb">Terabyte</option></select></div>
           </div>
         </div>
       </div>
     </div>
 
     <div class="converter-section" id="section-time">
-      <div class="converter-back" onclick="closeConverter()">
-        <span class="material-icons">arrow_back</span>
-        <span>Back to Tools</span>
-      </div>
+      <div class="converter-back" onclick="closeConverter()"><span class="material-icons">arrow_back</span><span>Back to Tools</span></div>
       <div class="converter-card">
-        <div class="converter-card-header">
-          <span class="material-icons">schedule</span>
-          <span class="converter-card-title">Time Converter</span>
-        </div>
+        <div class="converter-card-header"><span class="material-icons">schedule</span><span class="converter-card-title">Time Converter</span></div>
         <div class="converter-card-body">
-          <div class="converter-field">
-            <div class="converter-field-label">From</div>
-            <div class="converter-input-group">
-              <input type="number" class="converter-input" id="timeFrom" placeholder="Enter value" oninput="convertTime()">
-              <select class="converter-select" id="timeFromUnit" onchange="convertTime()">
-                <option value="ms">Millisecond</option>
-                <option value="s" selected>Second</option>
-                <option value="min">Minute</option>
-                <option value="hr">Hour</option>
-                <option value="day">Day</option>
-                <option value="week">Week</option>
-                <option value="month">Month</option>
-                <option value="year">Year</option>
-              </select>
-            </div>
+          <div class="converter-field"><div class="converter-field-label">From</div>
+            <div class="converter-input-group"><input type="number" class="converter-input" id="timeFrom" placeholder="Enter value" oninput="convertTime()"><select class="converter-select" id="timeFromUnit" onchange="convertTime()"><option value="ms">Millisecond</option><option value="s" selected>Second</option><option value="min">Minute</option><option value="hr">Hour</option><option value="day">Day</option><option value="week">Week</option><option value="month">Month</option><option value="year">Year</option></select></div>
           </div>
-          <div class="converter-swap-btn">
-            <button onclick="swapUnits('time')">
-              <span class="material-icons">swap_vert</span>
-            </button>
-          </div>
-          <div class="converter-field">
-            <div class="converter-field-label">To</div>
-            <div class="converter-input-group">
-              <input type="number" class="converter-input" id="timeTo" placeholder="Result" readonly>
-              <select class="converter-select" id="timeToUnit" onchange="convertTime()">
-                <option value="ms">Millisecond</option>
-                <option value="s">Second</option>
-                <option value="min">Minute</option>
-                <option value="hr" selected>Hour</option>
-                <option value="day">Day</option>
-                <option value="week">Week</option>
-                <option value="month">Month</option>
-                <option value="year">Year</option>
-              </select>
-            </div>
+          <div class="converter-swap-btn"><button onclick="swapUnits('time')"><span class="material-icons">swap_vert</span></button></div>
+          <div class="converter-field"><div class="converter-field-label">To</div>
+            <div class="converter-input-group"><input type="number" class="converter-input" id="timeTo" placeholder="Result" readonly><select class="converter-select" id="timeToUnit" onchange="convertTime()"><option value="ms">Millisecond</option><option value="s">Second</option><option value="min">Minute</option><option value="hr" selected>Hour</option><option value="day">Day</option><option value="week">Week</option><option value="month">Month</option><option value="year">Year</option></select></div>
           </div>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- SETTINGS PAGE -->
   <div class="page" id="page-settings">
-    <div class="section-header" style="padding: 16px;">Settings</div>
-    <div class="converter-card" style="margin: 0 12px 12px;">
+    <div class="section-header" style="padding: 16px 16px 0;">Appearance</div>
+    <div class="converter-card" style="margin: 12px;">
+      <div class="converter-card-header">
+        <span class="material-icons">palette</span>
+        <span class="converter-card-title">Theme Customizer</span>
+      </div>
+      <div class="converter-card-body">
+        <div class="theme-options">
+          <button class="theme-btn active" onclick="setTheme('vscode-dark')"><span class="material-icons" style="font-size: 16px;">dark_mode</span> Dark</button>
+          <button class="theme-btn" onclick="setTheme('vscode-light')"><span class="material-icons" style="font-size: 16px;">light_mode</span> Light</button>
+          <button class="theme-btn" onclick="setTheme('monokai')"><span class="material-icons" style="font-size: 16px;">style</span> Monokai</button>
+          <button class="theme-btn" onclick="setTheme('onedark')"><span class="material-icons" style="font-size: 16px;">code</span> One Dark</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-header" style="padding: 16px 16px 0;">Mode</div>
+    <div class="converter-card" style="margin: 12px;">
       <div class="converter-card-header">
         <span class="material-icons">science</span>
         <span class="converter-card-title">Scientific Mode</span>
@@ -1025,19 +1243,18 @@ body {
       </div>
     </div>
 
-    <div class="section-header" style="padding: 16px;">About</div>
-    <div class="converter-card" style="margin: 0 12px 12px;">
+    <div class="section-header" style="padding: 16px 16px 0;">About</div>
+    <div class="converter-card" style="margin: 12px;">
       <div class="converter-card-header">
         <span class="material-icons">info</span>
-        <span class="converter-card-title">VS Code Calculator</span>
+        <span class="converter-card-title">VS Code Calculator Pro</span>
       </div>
       <div class="converter-card-body">
         <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.6;">
-          A professional calculator and unit converter with VS Code-inspired dark theme. 
-          Features standard and scientific calculator modes plus 6 converter categories.
+          An advanced calculator and multi-tool suite for Android inspired by VS Code. Features Standard, Scientific, and Programmer base conversion tools, calculation history, themes, and 12 unit converters.
         </p>
         <p style="font-size: 12px; color: var(--text-secondary); margin-top: 12px;">
-          Version 1.0.0
+          Version 2.0.0
         </p>
       </div>
     </div>
@@ -1045,10 +1262,32 @@ body {
 
 </div>
 
+<!-- HISTORY DRAWER -->
+<div class="history-drawer" id="historyDrawer">
+  <div class="history-header">
+    <div class="history-title">
+      <span class="material-icons">history</span>
+      <span>Calculation History</span>
+    </div>
+    <div class="history-actions">
+      <button class="history-action-btn" onclick="clearHistoryLog()" title="Clear History"><span class="material-icons">delete_outline</span></button>
+      <button class="history-action-btn" onclick="toggleHistoryDrawer()"><span class="material-icons">close</span></button>
+    </div>
+  </div>
+  <div class="history-list" id="historyList">
+    <div class="history-empty">No history yet</div>
+  </div>
+</div>
+
+<!-- BOTTOM NAVIGATION -->
 <div class="bottom-nav">
   <div class="nav-item active" onclick="showPage('calculator')">
     <span class="material-icons nav-icon">calculate</span>
     <span class="nav-label">Calculator</span>
+  </div>
+  <div class="nav-item" onclick="showPage('programmer')">
+    <span class="material-icons nav-icon">code</span>
+    <span class="nav-label">Programmer</span>
   </div>
   <div class="nav-item" onclick="showPage('converters')">
     <span class="material-icons nav-icon">swap_horiz</span>
@@ -1060,34 +1299,29 @@ body {
   </div>
 </div>
 
+<!-- SIDEBAR MENU -->
 <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
 <div class="menu-panel" id="menuPanel">
   <div class="menu-header">
     <div class="menu-header-title">VS Code Calculator</div>
-    <div class="menu-header-subtitle">Calculator & Converters</div>
+    <div class="menu-header-subtitle">Professional Android Suite</div>
   </div>
   <div class="menu-items">
     <div class="menu-item active" onclick="showPage('calculator'); toggleMenu();">
-      <span class="material-icons">calculate</span>
-      Calculator
+      <span class="material-icons">calculate</span> Calculator
+    </div>
+    <div class="menu-item" onclick="showPage('programmer'); toggleMenu();">
+      <span class="material-icons">code</span> Programmer Mode
     </div>
     <div class="menu-item" onclick="showPage('converters'); toggleMenu();">
-      <span class="material-icons">swap_horiz</span>
-      Converters
+      <span class="material-icons">swap_horiz</span> Converters
     </div>
     <div class="menu-divider"></div>
-    <div class="menu-item" onclick="showPage('settings'); toggleMenu();">
-      <span class="material-icons">science</span>
-      Scientific Mode
+    <div class="menu-item" onclick="toggleHistoryDrawer(); toggleMenu();">
+      <span class="material-icons">history</span> History Log
     </div>
-    <div class="menu-divider"></div>
     <div class="menu-item" onclick="showPage('settings'); toggleMenu();">
-      <span class="material-icons">settings</span>
-      Settings
-    </div>
-    <div class="menu-item" onclick="showToast('VS Code Calculator v1.0'); toggleMenu();">
-      <span class="material-icons">info</span>
-      About
+      <span class="material-icons">settings</span> Settings
     </div>
   </div>
 </div>
@@ -1100,6 +1334,7 @@ let previousInput = '';
 let operator = null;
 let shouldResetScreen = false;
 let history = '';
+let historyLogs = [];
 
 const calcResult = document.getElementById('calcResult');
 const calcExpression = document.getElementById('calcExpression');
@@ -1200,8 +1435,13 @@ function compute() {
     case '^': result = Math.pow(prev, curr); break;
     default: return;
   }
-  history = formatDisplay(previousInput) + ' ' + getOpSymbol(operator) + ' ' + formatDisplay(currentInput) + ' =';
+  
+  const fullExp = formatDisplay(previousInput) + ' ' + getOpSymbol(operator) + ' ' + formatDisplay(currentInput);
+  history = fullExp + ' =';
   currentInput = parseFloat(result.toPrecision(12)).toString();
+  
+  addHistoryLog(fullExp, currentInput);
+  
   operator = null;
   previousInput = '';
   shouldResetScreen = true;
@@ -1254,8 +1494,10 @@ function appendFunction(func) {
     case 'abs': result = Math.abs(num); break;
   }
   if (isNaN(result) || !isFinite(result)) { currentInput = 'Error'; updateDisplay(); return; }
-  history = func + '(' + currentInput + ')';
+  const exp = func + '(' + currentInput + ')';
+  history = exp;
   currentInput = parseFloat(result.toPrecision(12)).toString();
+  addHistoryLog(exp, currentInput);
   shouldResetScreen = true;
   updateDisplay();
 }
@@ -1263,8 +1505,10 @@ function appendFunction(func) {
 function square() {
   if (currentInput === 'Error') return;
   const num = parseFloat(getRaw(currentInput));
-  history = formatDisplay(currentInput) + '\u00B2';
+  const exp = formatDisplay(currentInput) + '\u00B2';
+  history = exp;
   currentInput = parseFloat((num * num).toPrecision(12)).toString();
+  addHistoryLog(exp, currentInput);
   shouldResetScreen = true;
   updateDisplay();
 }
@@ -1272,8 +1516,10 @@ function square() {
 function cube() {
   if (currentInput === 'Error') return;
   const num = parseFloat(getRaw(currentInput));
-  history = formatDisplay(currentInput) + '\u00B3';
+  const exp = formatDisplay(currentInput) + '\u00B3';
+  history = exp;
   currentInput = parseFloat((num * num * num).toPrecision(12)).toString();
+  addHistoryLog(exp, currentInput);
   shouldResetScreen = true;
   updateDisplay();
 }
@@ -1292,8 +1538,10 @@ function factorial() {
   if (num < 0 || num > 170) { currentInput = 'Error'; updateDisplay(); return; }
   let result = 1;
   for (let i = 2; i <= num; i++) result *= i;
-  history = currentInput + '!';
+  const exp = currentInput + '!';
+  history = exp;
   currentInput = result.toString();
+  addHistoryLog(exp, currentInput);
   shouldResetScreen = true;
   updateDisplay();
 }
@@ -1302,8 +1550,10 @@ function inverse() {
   if (currentInput === 'Error') return;
   const num = parseFloat(getRaw(currentInput));
   if (num === 0) { currentInput = 'Error'; updateDisplay(); return; }
-  history = '1/(' + currentInput + ')';
+  const exp = '1/(' + currentInput + ')';
+  history = exp;
   currentInput = parseFloat((1 / num).toPrecision(12)).toString();
+  addHistoryLog(exp, currentInput);
   shouldResetScreen = true;
   updateDisplay();
 }
@@ -1316,6 +1566,93 @@ function appendValue(val) {
   }
   shouldResetScreen = true;
   updateDisplay();
+}
+
+/* History Log Logic */
+function toggleHistoryDrawer() {
+  document.getElementById('historyDrawer').classList.toggle('active');
+}
+
+function addHistoryLog(exp, res) {
+  historyLogs.unshift({ exp, res });
+  renderHistoryLogs();
+}
+
+function renderHistoryLogs() {
+  const list = document.getElementById('historyList');
+  if (historyLogs.length === 0) {
+    list.innerHTML = '<div class="history-empty">No history yet</div>';
+    return;
+  }
+  list.innerHTML = historyLogs.map((item, idx) => `
+    <div class="history-item" onclick="useHistoryItem(${idx})">
+      <div class="history-item-exp">${item.exp} =</div>
+      <div class="history-item-res">${formatDisplay(item.res)}</div>
+    </div>
+  `).join('');
+}
+
+function useHistoryItem(idx) {
+  const item = historyLogs[idx];
+  currentInput = item.res;
+  history = item.exp + ' =';
+  updateDisplay();
+  toggleHistoryDrawer();
+  showToast('Result restored');
+}
+
+function clearHistoryLog() {
+  historyLogs = [];
+  renderHistoryLogs();
+  showToast('History cleared');
+}
+
+/* Programmer / Base Converter */
+let progValue = 0;
+
+function updateProgDisplay() {
+  document.getElementById('val-HEX').textContent = progValue.toString(16).toUpperCase();
+  document.getElementById('val-DEC').textContent = progValue.toString(10);
+  document.getElementById('val-OCT').textContent = progValue.toString(8);
+  document.getElementById('val-BIN').textContent = progValue.toString(2);
+}
+
+function progAppend(char) {
+  let hexStr = progValue.toString(16).toUpperCase();
+  if (hexStr === '0') hexStr = '';
+  if (hexStr.length >= 10) return;
+  hexStr += char;
+  const parsed = parseInt(hexStr, 16);
+  if (!isNaN(parsed)) {
+    progValue = parsed;
+    updateProgDisplay();
+  }
+}
+
+function progClear() {
+  progValue = 0;
+  updateProgDisplay();
+}
+
+function progBackspace() {
+  let hexStr = progValue.toString(16).toUpperCase();
+  if (hexStr.length > 1) {
+    progValue = parseInt(hexStr.slice(0, -1), 16);
+  } else {
+    progValue = 0;
+  }
+  updateProgDisplay();
+}
+
+/* Theme Manager */
+function setTheme(theme) {
+  document.body.className = '';
+  if (theme !== 'vscode-dark') {
+    document.body.classList.add('theme-' + theme.replace('vscode-', ''));
+  }
+  document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  showToast('Theme updated!');
 }
 
 function toggleScientific() {
@@ -1340,12 +1677,12 @@ function showPage(page) {
   document.getElementById('page-' + page).classList.add('active');
   
   const navItems = document.querySelectorAll('.nav-item');
-  const pageMap = { 'calculator': 0, 'converters': 1, 'settings': 2 };
+  const pageMap = { 'calculator': 0, 'programmer': 1, 'converters': 2, 'settings': 3 };
   if (navItems[pageMap[page]] !== undefined) {
     navItems[pageMap[page]].classList.add('active');
   }
   
-  const titles = { 'calculator': 'Calculator', 'converters': 'Converters', 'settings': 'Settings' };
+  const titles = { 'calculator': 'Calculator', 'programmer': 'Programmer Mode', 'converters': 'Converters', 'settings': 'Settings' };
   document.getElementById('pageTitle').textContent = titles[page];
   
   if (page === 'converters') {
@@ -1394,6 +1731,7 @@ function swapUnits(type) {
   window['convert' + type.charAt(0).toUpperCase() + type.slice(1)]();
 }
 
+/* Converters Logic */
 function convertLength() {
   const val = parseFloat(document.getElementById('lengthFrom').value) || 0;
   const from = document.getElementById('lengthFromUnit').value;
@@ -1436,6 +1774,74 @@ function convertCurrency() {
   document.getElementById('currencyTo').value = parseFloat(result.toPrecision(10));
 }
 
+function convertArea() {
+  const val = parseFloat(document.getElementById('areaFrom').value) || 0;
+  const from = document.getElementById('areaFromUnit').value;
+  const to = document.getElementById('areaToUnit').value;
+  const toSqm = { sqm: 1, sqkm: 1000000, sqft: 0.092903, acre: 4046.86, ha: 10000 };
+  const result = val * toSqm[from] / toSqm[to];
+  document.getElementById('areaTo').value = parseFloat(result.toPrecision(10));
+}
+
+function convertSpeed() {
+  const val = parseFloat(document.getElementById('speedFrom').value) || 0;
+  const from = document.getElementById('speedFromUnit').value;
+  const to = document.getElementById('speedToUnit').value;
+  const toKmh = { kmh: 1, ms: 3.6, mph: 1.60934, knot: 1.852 };
+  const result = val * toKmh[from] / toKmh[to];
+  document.getElementById('speedTo').value = parseFloat(result.toPrecision(10));
+}
+
+function convertVolume() {
+  const val = parseFloat(document.getElementById('volumeFrom').value) || 0;
+  const from = document.getElementById('volumeFromUnit').value;
+  const to = document.getElementById('volumeToUnit').value;
+  const toMl = { ml: 1, l: 1000, gal: 3785.41, cup: 236.588 };
+  const result = val * toMl[from] / toMl[to];
+  document.getElementById('volumeTo').value = parseFloat(result.toPrecision(10));
+}
+
+function convertEnergy() {
+  const val = parseFloat(document.getElementById('energyFrom').value) || 0;
+  const from = document.getElementById('energyFromUnit').value;
+  const to = document.getElementById('energyToUnit').value;
+  const toJoules = { j: 1, kj: 1000, cal: 4.184, kcal: 4184, kwh: 3600000 };
+  const result = val * toJoules[from] / toJoules[to];
+  document.getElementById('energyTo').value = parseFloat(result.toPrecision(10));
+}
+
+function convertPressure() {
+  const val = parseFloat(document.getElementById('pressureFrom').value) || 0;
+  const from = document.getElementById('pressureFromUnit').value;
+  const to = document.getElementById('pressureToUnit').value;
+  const toPa = { pa: 1, bar: 100000, psi: 6894.76, atm: 101325 };
+  const result = val * toPa[from] / toPa[to];
+  document.getElementById('pressureTo').value = parseFloat(result.toPrecision(10));
+}
+
+function convertFuel() {
+  const val = parseFloat(document.getElementById('fuelFrom').value) || 0;
+  const from = document.getElementById('fuelFromUnit').value;
+  const to = document.getElementById('fuelToUnit').value;
+  let result;
+  if (from === to) {
+    result = val;
+  } else if (from === 'mpg' && to === 'kml') {
+    result = val * 0.425144;
+  } else if (from === 'mpg' && to === 'l100') {
+    result = val === 0 ? 0 : 235.215 / val;
+  } else if (from === 'kml' && to === 'mpg') {
+    result = val / 0.425144;
+  } else if (from === 'kml' && to === 'l100') {
+    result = val === 0 ? 0 : 100 / val;
+  } else if (from === 'l100' && to === 'mpg') {
+    result = val === 0 ? 0 : 235.215 / val;
+  } else if (from === 'l100' && to === 'kml') {
+    result = val === 0 ? 0 : 100 / val;
+  }
+  document.getElementById('fuelTo').value = parseFloat(result.toPrecision(10));
+}
+
 function convertData() {
   const val = parseFloat(document.getElementById('dataFrom').value) || 0;
   const from = document.getElementById('dataFromUnit').value;
@@ -1455,6 +1861,7 @@ function convertTime() {
 }
 
 updateDisplay();
+updateProgDisplay();
 </script>
 </body>
 </html>
