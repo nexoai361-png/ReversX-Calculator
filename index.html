@@ -253,49 +253,123 @@ body {
   grid-column: span 2;
 }
 
-.section-header {
-  padding: 16px 16px 8px;
-  font-size: 11px;
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  padding: 16px;
+}
+
+.tool-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.tool-card:active {
+  transform: scale(0.96);
+  border-color: var(--accent);
+  background: var(--bg-tertiary);
+}
+
+.tool-card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: var(--accent-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tool-card-icon .material-icons {
+  font-size: 24px;
+  color: var(--accent);
+}
+
+.tool-card-title {
+  font-size: 14px;
   font-weight: 700;
-  text-transform: uppercase;
+  color: var(--text-active);
+  text-align: center;
+}
+
+.tool-card-desc {
+  font-size: 11px;
   color: var(--text-secondary);
-  letter-spacing: 1px;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.converter-section {
+  display: none;
+  padding: 16px;
+}
+
+.converter-section.active {
+  display: block;
+}
+
+.converter-back {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 0;
+  margin-bottom: 16px;
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-size: 14px;
+  transition: color 0.2s;
+}
+
+.converter-back:active {
+  color: var(--accent);
+}
+
+.converter-back .material-icons {
+  font-size: 20px;
 }
 
 .converter-card {
   background: var(--bg-secondary);
-  margin: 8px 12px;
   border-radius: var(--radius-lg);
   border: 1px solid var(--border);
   overflow: hidden;
 }
 
 .converter-card-header {
-  padding: 12px 16px;
+  padding: 16px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   border-bottom: 1px solid var(--border);
   background: var(--bg-tertiary);
 }
 
 .converter-card-header .material-icons {
-  font-size: 20px;
+  font-size: 24px;
   color: var(--accent);
 }
 
 .converter-card-title {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
   color: var(--text-active);
 }
 
 .converter-card-body {
-  padding: 16px;
+  padding: 20px 16px;
 }
 
 .converter-field {
-  margin-bottom: 12px;
+  margin-bottom: 16px;
 }
 
 .converter-field:last-child {
@@ -307,7 +381,7 @@ body {
   font-weight: 700;
   text-transform: uppercase;
   color: var(--text-secondary);
-  margin-bottom: 6px;
+  margin-bottom: 8px;
   letter-spacing: 0.5px;
 }
 
@@ -322,7 +396,7 @@ body {
   background: var(--bg-input);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 12px 14px;
+  padding: 14px 16px;
   color: var(--text-active);
   font-size: 16px;
   font-family: 'Lato', sans-serif;
@@ -344,7 +418,7 @@ body {
   background: var(--bg-input);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 12px 12px;
+  padding: 14px 12px;
   color: var(--text-active);
   font-size: 13px;
   font-family: 'Lato', sans-serif;
@@ -368,12 +442,12 @@ body {
 .converter-swap-btn {
   display: flex;
   justify-content: center;
-  padding: 4px 0;
+  padding: 8px 0;
 }
 
 .converter-swap-btn button {
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   border: 1px solid var(--border);
   background: var(--bg-tertiary);
@@ -392,7 +466,7 @@ body {
 }
 
 .converter-swap-btn button .material-icons {
-  font-size: 18px;
+  font-size: 20px;
 }
 
 .menu-overlay {
@@ -586,267 +660,344 @@ body {
   </div>
 
   <div class="page" id="page-converters">
-    <div class="section-header">Length</div>
-    <div class="converter-card">
-      <div class="converter-card-header">
-        <span class="material-icons">straighten</span>
-        <span class="converter-card-title">Length</span>
-      </div>
-      <div class="converter-card-body">
-        <div class="converter-field">
-          <div class="converter-field-label">From</div>
-          <div class="converter-input-group">
-            <input type="number" class="converter-input" id="lengthFrom" placeholder="Enter value" oninput="convertLength()">
-            <select class="converter-select" id="lengthFromUnit" onchange="convertLength()">
-              <option value="mm">Millimeter</option>
-              <option value="cm">Centimeter</option>
-              <option value="m" selected>Meter</option>
-              <option value="km">Kilometer</option>
-              <option value="in">Inch</option>
-              <option value="ft">Feet</option>
-              <option value="yd">Yard</option>
-              <option value="mi">Mile</option>
-            </select>
+    <div id="toolsGrid">
+      <div class="tools-grid">
+        <div class="tool-card" onclick="openConverter('length')">
+          <div class="tool-card-icon">
+            <span class="material-icons">straighten</span>
           </div>
+          <div class="tool-card-title">Length</div>
+          <div class="tool-card-desc">mm, cm, m, km, ft, mi</div>
         </div>
-        <div class="converter-swap-btn">
-          <button onclick="swapUnits('length')">
-            <span class="material-icons">swap_vert</span>
-          </button>
+        <div class="tool-card" onclick="openConverter('weight')">
+          <div class="tool-card-icon">
+            <span class="material-icons">fitness_center</span>
+          </div>
+          <div class="tool-card-title">Weight</div>
+          <div class="tool-card-desc">mg, g, kg, lb, oz</div>
         </div>
-        <div class="converter-field">
-          <div class="converter-field-label">To</div>
-          <div class="converter-input-group">
-            <input type="number" class="converter-input" id="lengthTo" placeholder="Result" readonly>
-            <select class="converter-select" id="lengthToUnit" onchange="convertLength()">
-              <option value="mm">Millimeter</option>
-              <option value="cm">Centimeter</option>
-              <option value="m">Meter</option>
-              <option value="km">Kilometer</option>
-              <option value="in">Inch</option>
-              <option value="ft" selected>Feet</option>
-              <option value="yd">Yard</option>
-              <option value="mi">Mile</option>
-            </select>
+        <div class="tool-card" onclick="openConverter('temperature')">
+          <div class="tool-card-icon">
+            <span class="material-icons">thermostat</span>
+          </div>
+          <div class="tool-card-title">Temperature</div>
+          <div class="tool-card-desc">Celsius, Fahrenheit, Kelvin</div>
+        </div>
+        <div class="tool-card" onclick="openConverter('currency')">
+          <div class="tool-card-icon">
+            <span class="material-icons">attach_money</span>
+          </div>
+          <div class="tool-card-title">Currency</div>
+          <div class="tool-card-desc">USD, EUR, GBP, INR</div>
+        </div>
+        <div class="tool-card" onclick="openConverter('data')">
+          <div class="tool-card-icon">
+            <span class="material-icons">sd_storage</span>
+          </div>
+          <div class="tool-card-title">Data Storage</div>
+          <div class="tool-card-desc">KB, MB, GB, TB</div>
+        </div>
+        <div class="tool-card" onclick="openConverter('time')">
+          <div class="tool-card-icon">
+            <span class="material-icons">schedule</span>
+          </div>
+          <div class="tool-card-title">Time</div>
+          <div class="tool-card-desc">sec, min, hour, day, year</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="converter-section" id="section-length">
+      <div class="converter-back" onclick="closeConverter()">
+        <span class="material-icons">arrow_back</span>
+        <span>Back to Tools</span>
+      </div>
+      <div class="converter-card">
+        <div class="converter-card-header">
+          <span class="material-icons">straighten</span>
+          <span class="converter-card-title">Length Converter</span>
+        </div>
+        <div class="converter-card-body">
+          <div class="converter-field">
+            <div class="converter-field-label">From</div>
+            <div class="converter-input-group">
+              <input type="number" class="converter-input" id="lengthFrom" placeholder="Enter value" oninput="convertLength()">
+              <select class="converter-select" id="lengthFromUnit" onchange="convertLength()">
+                <option value="mm">Millimeter</option>
+                <option value="cm">Centimeter</option>
+                <option value="m" selected>Meter</option>
+                <option value="km">Kilometer</option>
+                <option value="in">Inch</option>
+                <option value="ft">Feet</option>
+                <option value="yd">Yard</option>
+                <option value="mi">Mile</option>
+              </select>
+            </div>
+          </div>
+          <div class="converter-swap-btn">
+            <button onclick="swapUnits('length')">
+              <span class="material-icons">swap_vert</span>
+            </button>
+          </div>
+          <div class="converter-field">
+            <div class="converter-field-label">To</div>
+            <div class="converter-input-group">
+              <input type="number" class="converter-input" id="lengthTo" placeholder="Result" readonly>
+              <select class="converter-select" id="lengthToUnit" onchange="convertLength()">
+                <option value="mm">Millimeter</option>
+                <option value="cm">Centimeter</option>
+                <option value="m">Meter</option>
+                <option value="km">Kilometer</option>
+                <option value="in">Inch</option>
+                <option value="ft" selected>Feet</option>
+                <option value="yd">Yard</option>
+                <option value="mi">Mile</option>
+              </select>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="section-header">Weight</div>
-    <div class="converter-card">
-      <div class="converter-card-header">
-        <span class="material-icons">fitness_center</span>
-        <span class="converter-card-title">Weight</span>
+    <div class="converter-section" id="section-weight">
+      <div class="converter-back" onclick="closeConverter()">
+        <span class="material-icons">arrow_back</span>
+        <span>Back to Tools</span>
       </div>
-      <div class="converter-card-body">
-        <div class="converter-field">
-          <div class="converter-field-label">From</div>
-          <div class="converter-input-group">
-            <input type="number" class="converter-input" id="weightFrom" placeholder="Enter value" oninput="convertWeight()">
-            <select class="converter-select" id="weightFromUnit" onchange="convertWeight()">
-              <option value="mg">Milligram</option>
-              <option value="g">Gram</option>
-              <option value="kg" selected>Kilogram</option>
-              <option value="ton">Metric Ton</option>
-              <option value="oz">Ounce</option>
-              <option value="lb">Pound</option>
-              <option value="stone">Stone</option>
-            </select>
+      <div class="converter-card">
+        <div class="converter-card-header">
+          <span class="material-icons">fitness_center</span>
+          <span class="converter-card-title">Weight Converter</span>
+        </div>
+        <div class="converter-card-body">
+          <div class="converter-field">
+            <div class="converter-field-label">From</div>
+            <div class="converter-input-group">
+              <input type="number" class="converter-input" id="weightFrom" placeholder="Enter value" oninput="convertWeight()">
+              <select class="converter-select" id="weightFromUnit" onchange="convertWeight()">
+                <option value="mg">Milligram</option>
+                <option value="g">Gram</option>
+                <option value="kg" selected>Kilogram</option>
+                <option value="ton">Metric Ton</option>
+                <option value="oz">Ounce</option>
+                <option value="lb">Pound</option>
+                <option value="stone">Stone</option>
+              </select>
+            </div>
           </div>
-        </div>
-        <div class="converter-swap-btn">
-          <button onclick="swapUnits('weight')">
-            <span class="material-icons">swap_vert</span>
-          </button>
-        </div>
-        <div class="converter-field">
-          <div class="converter-field-label">To</div>
-          <div class="converter-input-group">
-            <input type="number" class="converter-input" id="weightTo" placeholder="Result" readonly>
-            <select class="converter-select" id="weightToUnit" onchange="convertWeight()">
-              <option value="mg">Milligram</option>
-              <option value="g">Gram</option>
-              <option value="kg">Kilogram</option>
-              <option value="ton">Metric Ton</option>
-              <option value="oz">Ounce</option>
-              <option value="lb" selected>Pound</option>
-              <option value="stone">Stone</option>
-            </select>
+          <div class="converter-swap-btn">
+            <button onclick="swapUnits('weight')">
+              <span class="material-icons">swap_vert</span>
+            </button>
           </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="section-header">Temperature</div>
-    <div class="converter-card">
-      <div class="converter-card-header">
-        <span class="material-icons">thermostat</span>
-        <span class="converter-card-title">Temperature</span>
-      </div>
-      <div class="converter-card-body">
-        <div class="converter-field">
-          <div class="converter-field-label">From</div>
-          <div class="converter-input-group">
-            <input type="number" class="converter-input" id="tempFrom" placeholder="Enter value" oninput="convertTemperature()">
-            <select class="converter-select" id="tempFromUnit" onchange="convertTemperature()">
-              <option value="c" selected>Celsius</option>
-              <option value="f">Fahrenheit</option>
-              <option value="k">Kelvin</option>
-            </select>
-          </div>
-        </div>
-        <div class="converter-swap-btn">
-          <button onclick="swapUnits('temp')">
-            <span class="material-icons">swap_vert</span>
-          </button>
-        </div>
-        <div class="converter-field">
-          <div class="converter-field-label">To</div>
-          <div class="converter-input-group">
-            <input type="number" class="converter-input" id="tempTo" placeholder="Result" readonly>
-            <select class="converter-select" id="tempToUnit" onchange="convertTemperature()">
-              <option value="c">Celsius</option>
-              <option value="f" selected>Fahrenheit</option>
-              <option value="k">Kelvin</option>
-            </select>
+          <div class="converter-field">
+            <div class="converter-field-label">To</div>
+            <div class="converter-input-group">
+              <input type="number" class="converter-input" id="weightTo" placeholder="Result" readonly>
+              <select class="converter-select" id="weightToUnit" onchange="convertWeight()">
+                <option value="mg">Milligram</option>
+                <option value="g">Gram</option>
+                <option value="kg">Kilogram</option>
+                <option value="ton">Metric Ton</option>
+                <option value="oz">Ounce</option>
+                <option value="lb" selected>Pound</option>
+                <option value="stone">Stone</option>
+              </select>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="section-header">Currency</div>
-    <div class="converter-card">
-      <div class="converter-card-header">
-        <span class="material-icons">attach_money</span>
-        <span class="converter-card-title">Currency</span>
+    <div class="converter-section" id="section-temperature">
+      <div class="converter-back" onclick="closeConverter()">
+        <span class="material-icons">arrow_back</span>
+        <span>Back to Tools</span>
       </div>
-      <div class="converter-card-body">
-        <div class="converter-field">
-          <div class="converter-field-label">From</div>
-          <div class="converter-input-group">
-            <input type="number" class="converter-input" id="currencyFrom" placeholder="Enter value" oninput="convertCurrency()">
-            <select class="converter-select" id="currencyFromUnit" onchange="convertCurrency()">
-              <option value="USD" selected>USD</option>
-              <option value="EUR">EUR</option>
-              <option value="GBP">GBP</option>
-              <option value="INR">INR</option>
-              <option value="JPY">JPY</option>
-              <option value="CAD">CAD</option>
-              <option value="AUD">AUD</option>
-              <option value="CNY">CNY</option>
-            </select>
+      <div class="converter-card">
+        <div class="converter-card-header">
+          <span class="material-icons">thermostat</span>
+          <span class="converter-card-title">Temperature Converter</span>
+        </div>
+        <div class="converter-card-body">
+          <div class="converter-field">
+            <div class="converter-field-label">From</div>
+            <div class="converter-input-group">
+              <input type="number" class="converter-input" id="tempFrom" placeholder="Enter value" oninput="convertTemperature()">
+              <select class="converter-select" id="tempFromUnit" onchange="convertTemperature()">
+                <option value="c" selected>Celsius</option>
+                <option value="f">Fahrenheit</option>
+                <option value="k">Kelvin</option>
+              </select>
+            </div>
           </div>
-        </div>
-        <div class="converter-swap-btn">
-          <button onclick="swapUnits('currency')">
-            <span class="material-icons">swap_vert</span>
-          </button>
-        </div>
-        <div class="converter-field">
-          <div class="converter-field-label">To</div>
-          <div class="converter-input-group">
-            <input type="number" class="converter-input" id="currencyTo" placeholder="Result" readonly>
-            <select class="converter-select" id="currencyToUnit" onchange="convertCurrency()">
-              <option value="USD">USD</option>
-              <option value="EUR">EUR</option>
-              <option value="GBP">GBP</option>
-              <option value="INR" selected>INR</option>
-              <option value="JPY">JPY</option>
-              <option value="CAD">CAD</option>
-              <option value="AUD">AUD</option>
-              <option value="CNY">CNY</option>
-            </select>
+          <div class="converter-swap-btn">
+            <button onclick="swapUnits('temp')">
+              <span class="material-icons">swap_vert</span>
+            </button>
+          </div>
+          <div class="converter-field">
+            <div class="converter-field-label">To</div>
+            <div class="converter-input-group">
+              <input type="number" class="converter-input" id="tempTo" placeholder="Result" readonly>
+              <select class="converter-select" id="tempToUnit" onchange="convertTemperature()">
+                <option value="c">Celsius</option>
+                <option value="f" selected>Fahrenheit</option>
+                <option value="k">Kelvin</option>
+              </select>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="section-header">Data Storage</div>
-    <div class="converter-card">
-      <div class="converter-card-header">
-        <span class="material-icons">sd_storage</span>
-        <span class="converter-card-title">Data Storage</span>
+    <div class="converter-section" id="section-currency">
+      <div class="converter-back" onclick="closeConverter()">
+        <span class="material-icons">arrow_back</span>
+        <span>Back to Tools</span>
       </div>
-      <div class="converter-card-body">
-        <div class="converter-field">
-          <div class="converter-field-label">From</div>
-          <div class="converter-input-group">
-            <input type="number" class="converter-input" id="dataFrom" placeholder="Enter value" oninput="convertData()">
-            <select class="converter-select" id="dataFromUnit" onchange="convertData()">
-              <option value="bit">Bit</option>
-              <option value="byte">Byte</option>
-              <option value="kb" selected>Kilobyte</option>
-              <option value="mb">Megabyte</option>
-              <option value="gb">Gigabyte</option>
-              <option value="tb">Terabyte</option>
-            </select>
+      <div class="converter-card">
+        <div class="converter-card-header">
+          <span class="material-icons">attach_money</span>
+          <span class="converter-card-title">Currency Converter</span>
+        </div>
+        <div class="converter-card-body">
+          <div class="converter-field">
+            <div class="converter-field-label">From</div>
+            <div class="converter-input-group">
+              <input type="number" class="converter-input" id="currencyFrom" placeholder="Enter value" oninput="convertCurrency()">
+              <select class="converter-select" id="currencyFromUnit" onchange="convertCurrency()">
+                <option value="USD" selected>USD</option>
+                <option value="EUR">EUR</option>
+                <option value="GBP">GBP</option>
+                <option value="INR">INR</option>
+                <option value="JPY">JPY</option>
+                <option value="CAD">CAD</option>
+                <option value="AUD">AUD</option>
+                <option value="CNY">CNY</option>
+              </select>
+            </div>
           </div>
-        </div>
-        <div class="converter-swap-btn">
-          <button onclick="swapUnits('data')">
-            <span class="material-icons">swap_vert</span>
-          </button>
-        </div>
-        <div class="converter-field">
-          <div class="converter-field-label">To</div>
-          <div class="converter-input-group">
-            <input type="number" class="converter-input" id="dataTo" placeholder="Result" readonly>
-            <select class="converter-select" id="dataToUnit" onchange="convertData()">
-              <option value="bit">Bit</option>
-              <option value="byte">Byte</option>
-              <option value="kb">Kilobyte</option>
-              <option value="mb" selected>Megabyte</option>
-              <option value="gb">Gigabyte</option>
-              <option value="tb">Terabyte</option>
-            </select>
+          <div class="converter-swap-btn">
+            <button onclick="swapUnits('currency')">
+              <span class="material-icons">swap_vert</span>
+            </button>
+          </div>
+          <div class="converter-field">
+            <div class="converter-field-label">To</div>
+            <div class="converter-input-group">
+              <input type="number" class="converter-input" id="currencyTo" placeholder="Result" readonly>
+              <select class="converter-select" id="currencyToUnit" onchange="convertCurrency()">
+                <option value="USD">USD</option>
+                <option value="EUR">EUR</option>
+                <option value="GBP">GBP</option>
+                <option value="INR" selected>INR</option>
+                <option value="JPY">JPY</option>
+                <option value="CAD">CAD</option>
+                <option value="AUD">AUD</option>
+                <option value="CNY">CNY</option>
+              </select>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="section-header">Time</div>
-    <div class="converter-card">
-      <div class="converter-card-header">
-        <span class="material-icons">schedule</span>
-        <span class="converter-card-title">Time</span>
+    <div class="converter-section" id="section-data">
+      <div class="converter-back" onclick="closeConverter()">
+        <span class="material-icons">arrow_back</span>
+        <span>Back to Tools</span>
       </div>
-      <div class="converter-card-body">
-        <div class="converter-field">
-          <div class="converter-field-label">From</div>
-          <div class="converter-input-group">
-            <input type="number" class="converter-input" id="timeFrom" placeholder="Enter value" oninput="convertTime()">
-            <select class="converter-select" id="timeFromUnit" onchange="convertTime()">
-              <option value="ms">Millisecond</option>
-              <option value="s" selected>Second</option>
-              <option value="min">Minute</option>
-              <option value="hr">Hour</option>
-              <option value="day">Day</option>
-              <option value="week">Week</option>
-              <option value="month">Month</option>
-              <option value="year">Year</option>
-            </select>
+      <div class="converter-card">
+        <div class="converter-card-header">
+          <span class="material-icons">sd_storage</span>
+          <span class="converter-card-title">Data Storage Converter</span>
+        </div>
+        <div class="converter-card-body">
+          <div class="converter-field">
+            <div class="converter-field-label">From</div>
+            <div class="converter-input-group">
+              <input type="number" class="converter-input" id="dataFrom" placeholder="Enter value" oninput="convertData()">
+              <select class="converter-select" id="dataFromUnit" onchange="convertData()">
+                <option value="bit">Bit</option>
+                <option value="byte">Byte</option>
+                <option value="kb" selected>Kilobyte</option>
+                <option value="mb">Megabyte</option>
+                <option value="gb">Gigabyte</option>
+                <option value="tb">Terabyte</option>
+              </select>
+            </div>
+          </div>
+          <div class="converter-swap-btn">
+            <button onclick="swapUnits('data')">
+              <span class="material-icons">swap_vert</span>
+            </button>
+          </div>
+          <div class="converter-field">
+            <div class="converter-field-label">To</div>
+            <div class="converter-input-group">
+              <input type="number" class="converter-input" id="dataTo" placeholder="Result" readonly>
+              <select class="converter-select" id="dataToUnit" onchange="convertData()">
+                <option value="bit">Bit</option>
+                <option value="byte">Byte</option>
+                <option value="kb">Kilobyte</option>
+                <option value="mb" selected>Megabyte</option>
+                <option value="gb">Gigabyte</option>
+                <option value="tb">Terabyte</option>
+              </select>
+            </div>
           </div>
         </div>
-        <div class="converter-swap-btn">
-          <button onclick="swapUnits('time')">
-            <span class="material-icons">swap_vert</span>
-          </button>
+      </div>
+    </div>
+
+    <div class="converter-section" id="section-time">
+      <div class="converter-back" onclick="closeConverter()">
+        <span class="material-icons">arrow_back</span>
+        <span>Back to Tools</span>
+      </div>
+      <div class="converter-card">
+        <div class="converter-card-header">
+          <span class="material-icons">schedule</span>
+          <span class="converter-card-title">Time Converter</span>
         </div>
-        <div class="converter-field">
-          <div class="converter-field-label">To</div>
-          <div class="converter-input-group">
-            <input type="number" class="converter-input" id="timeTo" placeholder="Result" readonly>
-            <select class="converter-select" id="timeToUnit" onchange="convertTime()">
-              <option value="ms">Millisecond</option>
-              <option value="s">Second</option>
-              <option value="min">Minute</option>
-              <option value="hr" selected>Hour</option>
-              <option value="day">Day</option>
-              <option value="week">Week</option>
-              <option value="month">Month</option>
-              <option value="year">Year</option>
-            </select>
+        <div class="converter-card-body">
+          <div class="converter-field">
+            <div class="converter-field-label">From</div>
+            <div class="converter-input-group">
+              <input type="number" class="converter-input" id="timeFrom" placeholder="Enter value" oninput="convertTime()">
+              <select class="converter-select" id="timeFromUnit" onchange="convertTime()">
+                <option value="ms">Millisecond</option>
+                <option value="s" selected>Second</option>
+                <option value="min">Minute</option>
+                <option value="hr">Hour</option>
+                <option value="day">Day</option>
+                <option value="week">Week</option>
+                <option value="month">Month</option>
+                <option value="year">Year</option>
+              </select>
+            </div>
+          </div>
+          <div class="converter-swap-btn">
+            <button onclick="swapUnits('time')">
+              <span class="material-icons">swap_vert</span>
+            </button>
+          </div>
+          <div class="converter-field">
+            <div class="converter-field-label">To</div>
+            <div class="converter-input-group">
+              <input type="number" class="converter-input" id="timeTo" placeholder="Result" readonly>
+              <select class="converter-select" id="timeToUnit" onchange="convertTime()">
+                <option value="ms">Millisecond</option>
+                <option value="s">Second</option>
+                <option value="min">Minute</option>
+                <option value="hr" selected>Hour</option>
+                <option value="day">Day</option>
+                <option value="week">Week</option>
+                <option value="month">Month</option>
+                <option value="year">Year</option>
+              </select>
+            </div>
           </div>
         </div>
       </div>
@@ -854,8 +1005,8 @@ body {
   </div>
 
   <div class="page" id="page-settings">
-    <div class="section-header">Settings</div>
-    <div class="converter-card">
+    <div class="section-header" style="padding: 16px;">Settings</div>
+    <div class="converter-card" style="margin: 0 12px 12px;">
       <div class="converter-card-header">
         <span class="material-icons">science</span>
         <span class="converter-card-title">Scientific Mode</span>
@@ -874,8 +1025,8 @@ body {
       </div>
     </div>
 
-    <div class="section-header">About</div>
-    <div class="converter-card">
+    <div class="section-header" style="padding: 16px;">About</div>
+    <div class="converter-card" style="margin: 0 12px 12px;">
       <div class="converter-card-header">
         <span class="material-icons">info</span>
         <span class="converter-card-title">VS Code Calculator</span>
@@ -1196,6 +1347,21 @@ function showPage(page) {
   
   const titles = { 'calculator': 'Calculator', 'converters': 'Converters', 'settings': 'Settings' };
   document.getElementById('pageTitle').textContent = titles[page];
+  
+  if (page === 'converters') {
+    closeConverter();
+  }
+}
+
+function openConverter(type) {
+  document.getElementById('toolsGrid').style.display = 'none';
+  document.querySelectorAll('.converter-section').forEach(s => s.classList.remove('active'));
+  document.getElementById('section-' + type).classList.add('active');
+}
+
+function closeConverter() {
+  document.getElementById('toolsGrid').style.display = 'block';
+  document.querySelectorAll('.converter-section').forEach(s => s.classList.remove('active'));
 }
 
 function toggleMenu() {
@@ -1221,11 +1387,8 @@ function swapUnits(type) {
   const fromSelect = document.getElementById(type + 'FromUnit');
   const toSelect = document.getElementById(type + 'ToUnit');
   const fromValue = fromSelect.value;
-  const fromText = fromSelect.options[fromSelect.selectedIndex].text;
-  const toValue = toSelect.value;
-  const toText = toSelect.options[toSelect.selectedIndex].text;
   
-  fromSelect.value = toValue;
+  fromSelect.value = toSelect.value;
   toSelect.value = fromValue;
   
   window['convert' + type.charAt(0).toUpperCase() + type.slice(1)]();
