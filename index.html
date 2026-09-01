@@ -362,6 +362,7 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  height: 100%;
 }
 
 .custom-select-trigger:hover {
@@ -385,18 +386,16 @@ body {
 }
 
 .custom-select-dropdown {
-  position: absolute;
-  top: calc(100% + 4px);
-  left: 0;
-  right: 0;
+  position: fixed;
   background: var(--bg-tertiary);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  max-height: 200px;
+  max-height: 250px;
   overflow-y: auto;
-  z-index: 100;
+  z-index: 1000;
   display: none;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  min-width: 150px;
 }
 
 .custom-select.open .custom-select-dropdown {
@@ -404,8 +403,8 @@ body {
 }
 
 .custom-select-option {
-  padding: 10px 12px;
-  font-size: 13px;
+  padding: 12px 16px;
+  font-size: 14px;
   color: var(--text-primary);
   cursor: pointer;
   display: flex;
@@ -414,7 +413,8 @@ body {
   transition: background 0.1s;
 }
 
-.custom-select-option:hover {
+.custom-select-option:hover,
+.custom-select-option:active {
   background: var(--bg-hover);
 }
 
@@ -663,20 +663,20 @@ body {
           <div class="converter-field-label">From</div>
           <div class="converter-input-group">
             <input type="number" class="converter-input" id="lengthFrom" placeholder="Enter value" oninput="convertLength()">
-            <div class="custom-select" id="lengthFromUnit">
-              <div class="custom-select-trigger" onclick="toggleSelect('lengthFromUnit')">
+            <div class="custom-select" id="lengthFromUnit" data-value="m">
+              <div class="custom-select-trigger">
                 <span class="label">Meter</span>
                 <span class="material-icons">expand_more</span>
               </div>
               <div class="custom-select-dropdown">
-                <div class="custom-select-option" onclick="selectOption('lengthFromUnit', 'mm', 'Millimeter')">Millimeter</div>
-                <div class="custom-select-option" onclick="selectOption('lengthFromUnit', 'cm', 'Centimeter')">Centimeter</div>
-                <div class="custom-select-option selected" onclick="selectOption('lengthFromUnit', 'm', 'Meter')">Meter</div>
-                <div class="custom-select-option" onclick="selectOption('lengthFromUnit', 'km', 'Kilometer')">Kilometer</div>
-                <div class="custom-select-option" onclick="selectOption('lengthFromUnit', 'in', 'Inch')">Inch</div>
-                <div class="custom-select-option" onclick="selectOption('lengthFromUnit', 'ft', 'Feet')">Feet</div>
-                <div class="custom-select-option" onclick="selectOption('lengthFromUnit', 'yd', 'Yard')">Yard</div>
-                <div class="custom-select-option" onclick="selectOption('lengthFromUnit', 'mi', 'Mile')">Mile</div>
+                <div class="custom-select-option" data-value="mm">Millimeter</div>
+                <div class="custom-select-option" data-value="cm">Centimeter</div>
+                <div class="custom-select-option selected" data-value="m">Meter</div>
+                <div class="custom-select-option" data-value="km">Kilometer</div>
+                <div class="custom-select-option" data-value="in">Inch</div>
+                <div class="custom-select-option" data-value="ft">Feet</div>
+                <div class="custom-select-option" data-value="yd">Yard</div>
+                <div class="custom-select-option" data-value="mi">Mile</div>
               </div>
             </div>
           </div>
@@ -690,20 +690,20 @@ body {
           <div class="converter-field-label">To</div>
           <div class="converter-input-group">
             <input type="number" class="converter-input" id="lengthTo" placeholder="Result" readonly>
-            <div class="custom-select" id="lengthToUnit">
-              <div class="custom-select-trigger" onclick="toggleSelect('lengthToUnit')">
+            <div class="custom-select" id="lengthToUnit" data-value="ft">
+              <div class="custom-select-trigger">
                 <span class="label">Feet</span>
                 <span class="material-icons">expand_more</span>
               </div>
               <div class="custom-select-dropdown">
-                <div class="custom-select-option" onclick="selectOption('lengthToUnit', 'mm', 'Millimeter')">Millimeter</div>
-                <div class="custom-select-option" onclick="selectOption('lengthToUnit', 'cm', 'Centimeter')">Centimeter</div>
-                <div class="custom-select-option" onclick="selectOption('lengthToUnit', 'm', 'Meter')">Meter</div>
-                <div class="custom-select-option" onclick="selectOption('lengthToUnit', 'km', 'Kilometer')">Kilometer</div>
-                <div class="custom-select-option" onclick="selectOption('lengthToUnit', 'in', 'Inch')">Inch</div>
-                <div class="custom-select-option selected" onclick="selectOption('lengthToUnit', 'ft', 'Feet')">Feet</div>
-                <div class="custom-select-option" onclick="selectOption('lengthToUnit', 'yd', 'Yard')">Yard</div>
-                <div class="custom-select-option" onclick="selectOption('lengthToUnit', 'mi', 'Mile')">Mile</div>
+                <div class="custom-select-option" data-value="mm">Millimeter</div>
+                <div class="custom-select-option" data-value="cm">Centimeter</div>
+                <div class="custom-select-option" data-value="m">Meter</div>
+                <div class="custom-select-option" data-value="km">Kilometer</div>
+                <div class="custom-select-option" data-value="in">Inch</div>
+                <div class="custom-select-option selected" data-value="ft">Feet</div>
+                <div class="custom-select-option" data-value="yd">Yard</div>
+                <div class="custom-select-option" data-value="mi">Mile</div>
               </div>
             </div>
           </div>
@@ -722,19 +722,19 @@ body {
           <div class="converter-field-label">From</div>
           <div class="converter-input-group">
             <input type="number" class="converter-input" id="weightFrom" placeholder="Enter value" oninput="convertWeight()">
-            <div class="custom-select" id="weightFromUnit">
-              <div class="custom-select-trigger" onclick="toggleSelect('weightFromUnit')">
+            <div class="custom-select" id="weightFromUnit" data-value="kg">
+              <div class="custom-select-trigger">
                 <span class="label">Kilogram</span>
                 <span class="material-icons">expand_more</span>
               </div>
               <div class="custom-select-dropdown">
-                <div class="custom-select-option" onclick="selectOption('weightFromUnit', 'mg', 'Milligram')">Milligram</div>
-                <div class="custom-select-option" onclick="selectOption('weightFromUnit', 'g', 'Gram')">Gram</div>
-                <div class="custom-select-option selected" onclick="selectOption('weightFromUnit', 'kg', 'Kilogram')">Kilogram</div>
-                <div class="custom-select-option" onclick="selectOption('weightFromUnit', 'ton', 'Metric Ton')">Metric Ton</div>
-                <div class="custom-select-option" onclick="selectOption('weightFromUnit', 'oz', 'Ounce')">Ounce</div>
-                <div class="custom-select-option" onclick="selectOption('weightFromUnit', 'lb', 'Pound')">Pound</div>
-                <div class="custom-select-option" onclick="selectOption('weightFromUnit', 'stone', 'Stone')">Stone</div>
+                <div class="custom-select-option" data-value="mg">Milligram</div>
+                <div class="custom-select-option" data-value="g">Gram</div>
+                <div class="custom-select-option selected" data-value="kg">Kilogram</div>
+                <div class="custom-select-option" data-value="ton">Metric Ton</div>
+                <div class="custom-select-option" data-value="oz">Ounce</div>
+                <div class="custom-select-option" data-value="lb">Pound</div>
+                <div class="custom-select-option" data-value="stone">Stone</div>
               </div>
             </div>
           </div>
@@ -748,19 +748,19 @@ body {
           <div class="converter-field-label">To</div>
           <div class="converter-input-group">
             <input type="number" class="converter-input" id="weightTo" placeholder="Result" readonly>
-            <div class="custom-select" id="weightToUnit">
-              <div class="custom-select-trigger" onclick="toggleSelect('weightToUnit')">
+            <div class="custom-select" id="weightToUnit" data-value="lb">
+              <div class="custom-select-trigger">
                 <span class="label">Pound</span>
                 <span class="material-icons">expand_more</span>
               </div>
               <div class="custom-select-dropdown">
-                <div class="custom-select-option" onclick="selectOption('weightToUnit', 'mg', 'Milligram')">Milligram</div>
-                <div class="custom-select-option" onclick="selectOption('weightToUnit', 'g', 'Gram')">Gram</div>
-                <div class="custom-select-option" onclick="selectOption('weightToUnit', 'kg', 'Kilogram')">Kilogram</div>
-                <div class="custom-select-option" onclick="selectOption('weightToUnit', 'ton', 'Metric Ton')">Metric Ton</div>
-                <div class="custom-select-option" onclick="selectOption('weightToUnit', 'oz', 'Ounce')">Ounce</div>
-                <div class="custom-select-option selected" onclick="selectOption('weightToUnit', 'lb', 'Pound')">Pound</div>
-                <div class="custom-select-option" onclick="selectOption('weightToUnit', 'stone', 'Stone')">Stone</div>
+                <div class="custom-select-option" data-value="mg">Milligram</div>
+                <div class="custom-select-option" data-value="g">Gram</div>
+                <div class="custom-select-option" data-value="kg">Kilogram</div>
+                <div class="custom-select-option" data-value="ton">Metric Ton</div>
+                <div class="custom-select-option" data-value="oz">Ounce</div>
+                <div class="custom-select-option selected" data-value="lb">Pound</div>
+                <div class="custom-select-option" data-value="stone">Stone</div>
               </div>
             </div>
           </div>
@@ -779,15 +779,15 @@ body {
           <div class="converter-field-label">From</div>
           <div class="converter-input-group">
             <input type="number" class="converter-input" id="tempFrom" placeholder="Enter value" oninput="convertTemperature()">
-            <div class="custom-select" id="tempFromUnit">
-              <div class="custom-select-trigger" onclick="toggleSelect('tempFromUnit')">
+            <div class="custom-select" id="tempFromUnit" data-value="c">
+              <div class="custom-select-trigger">
                 <span class="label">Celsius</span>
                 <span class="material-icons">expand_more</span>
               </div>
               <div class="custom-select-dropdown">
-                <div class="custom-select-option selected" onclick="selectOption('tempFromUnit', 'c', 'Celsius')">Celsius</div>
-                <div class="custom-select-option" onclick="selectOption('tempFromUnit', 'f', 'Fahrenheit')">Fahrenheit</div>
-                <div class="custom-select-option" onclick="selectOption('tempFromUnit', 'k', 'Kelvin')">Kelvin</div>
+                <div class="custom-select-option selected" data-value="c">Celsius</div>
+                <div class="custom-select-option" data-value="f">Fahrenheit</div>
+                <div class="custom-select-option" data-value="k">Kelvin</div>
               </div>
             </div>
           </div>
@@ -801,15 +801,15 @@ body {
           <div class="converter-field-label">To</div>
           <div class="converter-input-group">
             <input type="number" class="converter-input" id="tempTo" placeholder="Result" readonly>
-            <div class="custom-select" id="tempToUnit">
-              <div class="custom-select-trigger" onclick="toggleSelect('tempToUnit')">
+            <div class="custom-select" id="tempToUnit" data-value="f">
+              <div class="custom-select-trigger">
                 <span class="label">Fahrenheit</span>
                 <span class="material-icons">expand_more</span>
               </div>
               <div class="custom-select-dropdown">
-                <div class="custom-select-option" onclick="selectOption('tempToUnit', 'c', 'Celsius')">Celsius</div>
-                <div class="custom-select-option selected" onclick="selectOption('tempToUnit', 'f', 'Fahrenheit')">Fahrenheit</div>
-                <div class="custom-select-option" onclick="selectOption('tempToUnit', 'k', 'Kelvin')">Kelvin</div>
+                <div class="custom-select-option" data-value="c">Celsius</div>
+                <div class="custom-select-option selected" data-value="f">Fahrenheit</div>
+                <div class="custom-select-option" data-value="k">Kelvin</div>
               </div>
             </div>
           </div>
@@ -828,20 +828,20 @@ body {
           <div class="converter-field-label">From</div>
           <div class="converter-input-group">
             <input type="number" class="converter-input" id="currencyFrom" placeholder="Enter value" oninput="convertCurrency()">
-            <div class="custom-select" id="currencyFromUnit">
-              <div class="custom-select-trigger" onclick="toggleSelect('currencyFromUnit')">
+            <div class="custom-select" id="currencyFromUnit" data-value="USD">
+              <div class="custom-select-trigger">
                 <span class="label">USD</span>
                 <span class="material-icons">expand_more</span>
               </div>
               <div class="custom-select-dropdown">
-                <div class="custom-select-option selected" onclick="selectOption('currencyFromUnit', 'USD', 'USD')">USD</div>
-                <div class="custom-select-option" onclick="selectOption('currencyFromUnit', 'EUR', 'EUR')">EUR</div>
-                <div class="custom-select-option" onclick="selectOption('currencyFromUnit', 'GBP', 'GBP')">GBP</div>
-                <div class="custom-select-option" onclick="selectOption('currencyFromUnit', 'INR', 'INR')">INR</div>
-                <div class="custom-select-option" onclick="selectOption('currencyFromUnit', 'JPY', 'JPY')">JPY</div>
-                <div class="custom-select-option" onclick="selectOption('currencyFromUnit', 'CAD', 'CAD')">CAD</div>
-                <div class="custom-select-option" onclick="selectOption('currencyFromUnit', 'AUD', 'AUD')">AUD</div>
-                <div class="custom-select-option" onclick="selectOption('currencyFromUnit', 'CNY', 'CNY')">CNY</div>
+                <div class="custom-select-option selected" data-value="USD">USD</div>
+                <div class="custom-select-option" data-value="EUR">EUR</div>
+                <div class="custom-select-option" data-value="GBP">GBP</div>
+                <div class="custom-select-option" data-value="INR">INR</div>
+                <div class="custom-select-option" data-value="JPY">JPY</div>
+                <div class="custom-select-option" data-value="CAD">CAD</div>
+                <div class="custom-select-option" data-value="AUD">AUD</div>
+                <div class="custom-select-option" data-value="CNY">CNY</div>
               </div>
             </div>
           </div>
@@ -855,20 +855,20 @@ body {
           <div class="converter-field-label">To</div>
           <div class="converter-input-group">
             <input type="number" class="converter-input" id="currencyTo" placeholder="Result" readonly>
-            <div class="custom-select" id="currencyToUnit">
-              <div class="custom-select-trigger" onclick="toggleSelect('currencyToUnit')">
+            <div class="custom-select" id="currencyToUnit" data-value="INR">
+              <div class="custom-select-trigger">
                 <span class="label">INR</span>
                 <span class="material-icons">expand_more</span>
               </div>
               <div class="custom-select-dropdown">
-                <div class="custom-select-option" onclick="selectOption('currencyToUnit', 'USD', 'USD')">USD</div>
-                <div class="custom-select-option" onclick="selectOption('currencyToUnit', 'EUR', 'EUR')">EUR</div>
-                <div class="custom-select-option" onclick="selectOption('currencyToUnit', 'GBP', 'GBP')">GBP</div>
-                <div class="custom-select-option selected" onclick="selectOption('currencyToUnit', 'INR', 'INR')">INR</div>
-                <div class="custom-select-option" onclick="selectOption('currencyToUnit', 'JPY', 'JPY')">JPY</div>
-                <div class="custom-select-option" onclick="selectOption('currencyToUnit', 'CAD', 'CAD')">CAD</div>
-                <div class="custom-select-option" onclick="selectOption('currencyToUnit', 'AUD', 'AUD')">AUD</div>
-                <div class="custom-select-option" onclick="selectOption('currencyToUnit', 'CNY', 'CNY')">CNY</div>
+                <div class="custom-select-option" data-value="USD">USD</div>
+                <div class="custom-select-option" data-value="EUR">EUR</div>
+                <div class="custom-select-option" data-value="GBP">GBP</div>
+                <div class="custom-select-option selected" data-value="INR">INR</div>
+                <div class="custom-select-option" data-value="JPY">JPY</div>
+                <div class="custom-select-option" data-value="CAD">CAD</div>
+                <div class="custom-select-option" data-value="AUD">AUD</div>
+                <div class="custom-select-option" data-value="CNY">CNY</div>
               </div>
             </div>
           </div>
@@ -887,18 +887,18 @@ body {
           <div class="converter-field-label">From</div>
           <div class="converter-input-group">
             <input type="number" class="converter-input" id="dataFrom" placeholder="Enter value" oninput="convertData()">
-            <div class="custom-select" id="dataFromUnit">
-              <div class="custom-select-trigger" onclick="toggleSelect('dataFromUnit')">
+            <div class="custom-select" id="dataFromUnit" data-value="kb">
+              <div class="custom-select-trigger">
                 <span class="label">Kilobyte</span>
                 <span class="material-icons">expand_more</span>
               </div>
               <div class="custom-select-dropdown">
-                <div class="custom-select-option" onclick="selectOption('dataFromUnit', 'bit', 'Bit')">Bit</div>
-                <div class="custom-select-option" onclick="selectOption('dataFromUnit', 'byte', 'Byte')">Byte</div>
-                <div class="custom-select-option selected" onclick="selectOption('dataFromUnit', 'kb', 'Kilobyte')">Kilobyte</div>
-                <div class="custom-select-option" onclick="selectOption('dataFromUnit', 'mb', 'Megabyte')">Megabyte</div>
-                <div class="custom-select-option" onclick="selectOption('dataFromUnit', 'gb', 'Gigabyte')">Gigabyte</div>
-                <div class="custom-select-option" onclick="selectOption('dataFromUnit', 'tb', 'Terabyte')">Terabyte</div>
+                <div class="custom-select-option" data-value="bit">Bit</div>
+                <div class="custom-select-option" data-value="byte">Byte</div>
+                <div class="custom-select-option selected" data-value="kb">Kilobyte</div>
+                <div class="custom-select-option" data-value="mb">Megabyte</div>
+                <div class="custom-select-option" data-value="gb">Gigabyte</div>
+                <div class="custom-select-option" data-value="tb">Terabyte</div>
               </div>
             </div>
           </div>
@@ -912,18 +912,18 @@ body {
           <div class="converter-field-label">To</div>
           <div class="converter-input-group">
             <input type="number" class="converter-input" id="dataTo" placeholder="Result" readonly>
-            <div class="custom-select" id="dataToUnit">
-              <div class="custom-select-trigger" onclick="toggleSelect('dataToUnit')">
+            <div class="custom-select" id="dataToUnit" data-value="mb">
+              <div class="custom-select-trigger">
                 <span class="label">Megabyte</span>
                 <span class="material-icons">expand_more</span>
               </div>
               <div class="custom-select-dropdown">
-                <div class="custom-select-option" onclick="selectOption('dataToUnit', 'bit', 'Bit')">Bit</div>
-                <div class="custom-select-option" onclick="selectOption('dataToUnit', 'byte', 'Byte')">Byte</div>
-                <div class="custom-select-option" onclick="selectOption('dataToUnit', 'kb', 'Kilobyte')">Kilobyte</div>
-                <div class="custom-select-option selected" onclick="selectOption('dataToUnit', 'mb', 'Megabyte')">Megabyte</div>
-                <div class="custom-select-option" onclick="selectOption('dataToUnit', 'gb', 'Gigabyte')">Gigabyte</div>
-                <div class="custom-select-option" onclick="selectOption('dataToUnit', 'tb', 'Terabyte')">Terabyte</div>
+                <div class="custom-select-option" data-value="bit">Bit</div>
+                <div class="custom-select-option" data-value="byte">Byte</div>
+                <div class="custom-select-option" data-value="kb">Kilobyte</div>
+                <div class="custom-select-option selected" data-value="mb">Megabyte</div>
+                <div class="custom-select-option" data-value="gb">Gigabyte</div>
+                <div class="custom-select-option" data-value="tb">Terabyte</div>
               </div>
             </div>
           </div>
@@ -942,20 +942,20 @@ body {
           <div class="converter-field-label">From</div>
           <div class="converter-input-group">
             <input type="number" class="converter-input" id="timeFrom" placeholder="Enter value" oninput="convertTime()">
-            <div class="custom-select" id="timeFromUnit">
-              <div class="custom-select-trigger" onclick="toggleSelect('timeFromUnit')">
+            <div class="custom-select" id="timeFromUnit" data-value="s">
+              <div class="custom-select-trigger">
                 <span class="label">Second</span>
                 <span class="material-icons">expand_more</span>
               </div>
               <div class="custom-select-dropdown">
-                <div class="custom-select-option" onclick="selectOption('timeFromUnit', 'ms', 'Millisecond')">Millisecond</div>
-                <div class="custom-select-option selected" onclick="selectOption('timeFromUnit', 's', 'Second')">Second</div>
-                <div class="custom-select-option" onclick="selectOption('timeFromUnit', 'min', 'Minute')">Minute</div>
-                <div class="custom-select-option" onclick="selectOption('timeFromUnit', 'hr', 'Hour')">Hour</div>
-                <div class="custom-select-option" onclick="selectOption('timeFromUnit', 'day', 'Day')">Day</div>
-                <div class="custom-select-option" onclick="selectOption('timeFromUnit', 'week', 'Week')">Week</div>
-                <div class="custom-select-option" onclick="selectOption('timeFromUnit', 'month', 'Month')">Month</div>
-                <div class="custom-select-option" onclick="selectOption('timeFromUnit', 'year', 'Year')">Year</div>
+                <div class="custom-select-option" data-value="ms">Millisecond</div>
+                <div class="custom-select-option selected" data-value="s">Second</div>
+                <div class="custom-select-option" data-value="min">Minute</div>
+                <div class="custom-select-option" data-value="hr">Hour</div>
+                <div class="custom-select-option" data-value="day">Day</div>
+                <div class="custom-select-option" data-value="week">Week</div>
+                <div class="custom-select-option" data-value="month">Month</div>
+                <div class="custom-select-option" data-value="year">Year</div>
               </div>
             </div>
           </div>
@@ -969,20 +969,20 @@ body {
           <div class="converter-field-label">To</div>
           <div class="converter-input-group">
             <input type="number" class="converter-input" id="timeTo" placeholder="Result" readonly>
-            <div class="custom-select" id="timeToUnit">
-              <div class="custom-select-trigger" onclick="toggleSelect('timeToUnit')">
+            <div class="custom-select" id="timeToUnit" data-value="hr">
+              <div class="custom-select-trigger">
                 <span class="label">Hour</span>
                 <span class="material-icons">expand_more</span>
               </div>
               <div class="custom-select-dropdown">
-                <div class="custom-select-option" onclick="selectOption('timeToUnit', 'ms', 'Millisecond')">Millisecond</div>
-                <div class="custom-select-option" onclick="selectOption('timeToUnit', 's', 'Second')">Second</div>
-                <div class="custom-select-option" onclick="selectOption('timeToUnit', 'min', 'Minute')">Minute</div>
-                <div class="custom-select-option selected" onclick="selectOption('timeToUnit', 'hr', 'Hour')">Hour</div>
-                <div class="custom-select-option" onclick="selectOption('timeToUnit', 'day', 'Day')">Day</div>
-                <div class="custom-select-option" onclick="selectOption('timeToUnit', 'week', 'Week')">Week</div>
-                <div class="custom-select-option" onclick="selectOption('timeToUnit', 'month', 'Month')">Month</div>
-                <div class="custom-select-option" onclick="selectOption('timeToUnit', 'year', 'Year')">Year</div>
+                <div class="custom-select-option" data-value="ms">Millisecond</div>
+                <div class="custom-select-option" data-value="s">Second</div>
+                <div class="custom-select-option" data-value="min">Minute</div>
+                <div class="custom-select-option selected" data-value="hr">Hour</div>
+                <div class="custom-select-option" data-value="day">Day</div>
+                <div class="custom-select-option" data-value="week">Week</div>
+                <div class="custom-select-option" data-value="month">Month</div>
+                <div class="custom-select-option" data-value="year">Year</div>
               </div>
             </div>
           </div>
@@ -1350,25 +1350,63 @@ function showToast(message) {
   setTimeout(() => toast.classList.remove('active'), 2000);
 }
 
-function toggleSelect(id) {
-  const select = document.getElementById(id);
-  const isOpen = select.classList.contains('active');
-  document.querySelectorAll('.custom-select').forEach(s => s.classList.remove('active'));
-  if (!isOpen) {
-    select.classList.add('active');
+// Custom Select using event delegation
+document.addEventListener('click', function(e) {
+  // Handle trigger click
+  const trigger = e.target.closest('.custom-select-trigger');
+  if (trigger) {
+    const select = trigger.parentElement;
+    const isOpen = select.classList.contains('open');
+    
+    // Close all selects
+    document.querySelectorAll('.custom-select').forEach(s => s.classList.remove('open'));
+    
+    // Toggle current
+    if (!isOpen) {
+      select.classList.add('open');
+      positionDropdown(select);
+    }
+    return;
   }
-}
-
-function selectOption(id, value, label) {
-  const select = document.getElementById(id);
-  select.dataset.value = value;
-  select.querySelector('.label').textContent = label;
-  select.querySelectorAll('.custom-select-option').forEach(opt => opt.classList.remove('selected'));
-  event.target.classList.add('selected');
-  select.classList.remove('active');
   
-  const converterType = id.replace('FromUnit', '').replace('ToUnit', '');
-  window['convert' + converterType.charAt(0).toUpperCase() + converterType.slice(1)]();
+  // Handle option click
+  const option = e.target.closest('.custom-select-option');
+  if (option) {
+    const select = option.closest('.custom-select');
+    const value = option.dataset.value;
+    const label = option.textContent;
+    
+    // Update select value
+    select.dataset.value = value;
+    select.querySelector('.label').textContent = label;
+    
+    // Update selected state
+    select.querySelectorAll('.custom-select-option').forEach(opt => opt.classList.remove('selected'));
+    option.classList.add('selected');
+    
+    // Close dropdown
+    select.classList.remove('open');
+    
+    // Trigger conversion
+    const converterType = select.id.replace('FromUnit', '').replace('ToUnit', '');
+    window['convert' + converterType.charAt(0).toUpperCase() + converterType.slice(1)]();
+    return;
+  }
+  
+  // Close all selects when clicking outside
+  if (!e.target.closest('.custom-select')) {
+    document.querySelectorAll('.custom-select').forEach(s => s.classList.remove('open'));
+  }
+});
+
+function positionDropdown(select) {
+  const trigger = select.querySelector('.custom-select-trigger');
+  const dropdown = select.querySelector('.custom-select-dropdown');
+  const rect = trigger.getBoundingClientRect();
+  
+  dropdown.style.top = (rect.bottom + window.scrollY) + 'px';
+  dropdown.style.left = rect.left + 'px';
+  dropdown.style.width = rect.width + 'px';
 }
 
 function swapUnits(type) {
@@ -1400,12 +1438,6 @@ function swapUnits(type) {
   
   window['convert' + type.charAt(0).toUpperCase() + type.slice(1)]();
 }
-
-document.addEventListener('click', function(e) {
-  if (!e.target.closest('.custom-select')) {
-    document.querySelectorAll('.custom-select').forEach(s => s.classList.remove('active'));
-  }
-});
 
 function convertLength() {
   const val = parseFloat(document.getElementById('lengthFrom').value) || 0;
