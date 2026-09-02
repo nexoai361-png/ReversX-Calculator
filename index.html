@@ -40,6 +40,17 @@
   --font-mono: 'Fira Code', monospace;
 }
 
+body {
+  font-family: 'Lato', sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
 body.theme-light {
   --bg-primary: #ffffff;
   --bg-secondary: #f3f3f3;
@@ -50,10 +61,6 @@ body.theme-light {
   --text-primary: #333333;
   --text-secondary: #666666;
   --text-active: #000000;
-  --accent: #007acc;
-  --accent-hover: #005a9e;
-  --border: #cccccc;
-  --border-focus: #007acc;
 }
 
 body.theme-monokai {
@@ -68,6 +75,7 @@ body.theme-monokai {
   --text-active: #f92672;
   --accent: #f92672;
   --accent-hover: #ff4689;
+  --accent-muted: rgba(249, 38, 114, 0.2);
   --border: #49483e;
   --border-focus: #a6e22e;
 }
@@ -86,17 +94,6 @@ body.theme-onedark {
   --accent-hover: #4fa0e0;
   --border: #3b4048;
   --border-focus: #61afef;
-}
-
-body {
-  font-family: 'Lato', sans-serif;
-  background: var(--bg-primary);
-  color: var(--text-primary);
-  height: 100vh;
-  height: 100dvh;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
 }
 
 .header {
@@ -179,22 +176,10 @@ body {
   padding: 8px 0;
 }
 
-.nav-item:active {
-  background: var(--bg-hover);
-}
-
-.nav-item.active {
-  color: var(--accent);
-}
-
-.nav-icon {
-  font-size: 22px;
-}
-
-.nav-label {
-  font-size: 10px;
-  font-weight: 400;
-}
+.nav-item:active { background: var(--bg-hover); }
+.nav-item.active { color: var(--accent); }
+.nav-icon { font-size: 22px; }
+.nav-label { font-size: 10px; font-weight: 400; }
 
 .calc-display {
   background: var(--bg-secondary);
@@ -209,8 +194,7 @@ body {
 
 .calc-history-btn {
   position: absolute;
-  top: 12px;
-  left: 16px;
+  top: 12px; left: 16px;
   background: transparent;
   border: none;
   color: var(--text-secondary);
@@ -221,36 +205,10 @@ body {
   font-size: 12px;
 }
 
-.calc-history-btn:active {
-  color: var(--accent);
-}
-
-.calc-history {
-  color: var(--text-secondary);
-  font-size: 14px;
-  min-height: 20px;
-  text-align: right;
-  width: 100%;
-  margin-bottom: 4px;
-}
-
-.calc-expression {
-  color: var(--text-primary);
-  font-size: 16px;
-  min-height: 24px;
-  text-align: right;
-  width: 100%;
-  margin-bottom: 8px;
-}
-
-.calc-result {
-  color: var(--text-active);
-  font-size: 40px;
-  font-weight: 300;
-  text-align: right;
-  width: 100%;
-  letter-spacing: -1px;
-}
+.calc-history-btn:active { color: var(--accent); }
+.calc-history { color: var(--text-secondary); font-size: 14px; min-height: 20px; text-align: right; width: 100%; margin-bottom: 4px; }
+.calc-expression { color: var(--text-primary); font-size: 16px; min-height: 24px; text-align: right; width: 100%; margin-bottom: 8px; }
+.calc-result { color: var(--text-active); font-size: 40px; font-weight: 300; text-align: right; width: 100%; letter-spacing: -1px; }
 
 .scientific-grid {
   display: none;
@@ -259,10 +217,7 @@ body {
   padding: 8px;
   background: var(--bg-primary);
 }
-
-.scientific-grid.active {
-  display: grid;
-}
+.scientific-grid.active { display: grid; }
 
 .calc-buttons {
   display: grid;
@@ -283,189 +238,21 @@ body {
   background: var(--bg-tertiary);
   color: var(--text-primary);
 }
+.calc-btn:active { transform: scale(0.95); opacity: 0.8; }
+.calc-btn-number { background: var(--bg-input); }
+.calc-btn-operator { color: #4fc3f7; font-size: 22px; }
+.calc-btn-equals { background: var(--accent); color: white; font-weight: 700; }
+.calc-btn-equals:active { background: var(--accent-hover); }
+.calc-btn-function { font-size: 14px; color: var(--text-secondary); }
+.calc-btn-clear { color: #ef5350; }
+.calc-btn-zero { grid-column: span 2; }
 
-.calc-btn:active {
-  transform: scale(0.95);
-  opacity: 0.8;
-}
-
-.calc-btn-number {
-  background: var(--bg-input);
-}
-
-.calc-btn-operator {
-  color: #4fc3f7;
-  font-size: 22px;
-}
-
-.calc-btn-equals {
-  background: var(--accent);
-  color: white;
-  font-weight: 700;
-}
-
-.calc-btn-equals:active {
-  background: var(--accent-hover);
-}
-
-.calc-btn-function {
-  font-size: 14px;
-  color: var(--text-secondary);
-}
-
-.calc-btn-clear {
-  color: #ef5350;
-}
-
-.calc-btn-zero {
-  grid-column: span 2;
-}
-
-/* History Log Panel */
-.history-drawer {
-  position: fixed;
-  top: var(--header-height);
-  left: 0;
-  right: 0;
-  bottom: var(--bottom-nav-height);
-  background: var(--bg-secondary);
-  z-index: 500;
-  transform: translateY(100%);
-  transition: transform 0.3s ease;
-  display: flex;
-  flex-direction: column;
-}
-
-.history-drawer.active {
-  transform: translateY(0);
-}
-
-.history-header {
-  padding: 16px;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: var(--bg-tertiary);
-}
-
-.history-title {
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--text-active);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.history-actions {
-  display: flex;
-  gap: 12px;
-}
-
-.history-action-btn {
-  background: transparent;
-  border: none;
-  color: var(--text-secondary);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-}
-
-.history-action-btn:active {
-  color: var(--accent);
-}
-
-.history-list {
-  flex: 1;
-  overflow-y: auto;
-  padding: 12px 16px;
-}
-
-.history-item {
-  padding: 12px;
-  border-bottom: 1px solid var(--border);
-  cursor: pointer;
-  transition: background 0.1s;
-  border-radius: var(--radius);
-}
-
-.history-item:active {
-  background: var(--bg-hover);
-}
-
-.history-item-exp {
-  font-size: 13px;
-  color: var(--text-secondary);
-  text-align: right;
-  margin-bottom: 4px;
-}
-
-.history-item-res {
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--text-active);
-  text-align: right;
-}
-
-.history-empty {
-  text-align: center;
-  color: var(--text-secondary);
-  margin-top: 40px;
-  font-size: 14px;
-}
-
-/* Programmer Calculator */
-.programmer-card {
-  background: var(--bg-secondary);
-  margin: 12px;
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--border);
-  padding: 16px;
-}
-
-.base-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px 12px;
-  border-radius: var(--radius);
-  margin-bottom: 6px;
-  background: var(--bg-primary);
-  border: 1px solid transparent;
-  cursor: pointer;
-}
-
-.base-row.active {
-  border-color: var(--accent);
-  background: var(--bg-tertiary);
-}
-
-.base-label {
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--text-secondary);
-  width: 45px;
-}
-
-.base-val {
-  font-family: var(--font-mono);
-  font-size: 15px;
-  color: var(--text-active);
-  text-align: right;
-  word-break: break-all;
-}
-
-/* Tools Grid */
 .tools-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 12px;
   padding: 16px;
 }
-
 .tool-card {
   background: var(--bg-secondary);
   border: 1px solid var(--border);
@@ -478,13 +265,11 @@ body {
   align-items: center;
   gap: 10px;
 }
-
 .tool-card:active {
   transform: scale(0.96);
   border-color: var(--accent);
   background: var(--bg-tertiary);
 }
-
 .tool-card-icon {
   width: 44px;
   height: 44px;
@@ -494,54 +279,20 @@ body {
   align-items: center;
   justify-content: center;
 }
+.tool-card-icon .material-icons { font-size: 22px; color: var(--accent); }
+.tool-card-title { font-size: 13px; font-weight: 700; color: var(--text-active); text-align: center; }
+.tool-card-desc { font-size: 10px; color: var(--text-secondary); text-align: center; line-height: 1.3; }
 
-.tool-card-icon .material-icons {
-  font-size: 22px;
-  color: var(--accent);
-}
-
-.tool-card-title {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--text-active);
-  text-align: center;
-}
-
-.tool-card-desc {
-  font-size: 10px;
-  color: var(--text-secondary);
-  text-align: center;
-  line-height: 1.3;
-}
-
-.converter-section {
-  display: none;
-  padding: 16px;
-}
-
-.converter-section.active {
-  display: block;
-}
-
+.converter-section { display: none; padding: 16px; }
+.converter-section.active { display: block; }
 .converter-back {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 0;
-  margin-bottom: 16px;
-  cursor: pointer;
-  color: var(--text-secondary);
-  font-size: 14px;
-  transition: color 0.2s;
+  display: flex; align-items: center; gap: 8px;
+  padding: 12px 0; margin-bottom: 16px;
+  cursor: pointer; color: var(--text-secondary);
+  font-size: 14px; transition: color 0.2s;
 }
-
-.converter-back:active {
-  color: var(--accent);
-}
-
-.converter-back .material-icons {
-  font-size: 20px;
-}
+.converter-back:active { color: var(--accent); }
+.converter-back .material-icons { font-size: 20px; }
 
 .converter-card {
   background: var(--bg-secondary);
@@ -549,54 +300,21 @@ body {
   border: 1px solid var(--border);
   overflow: hidden;
 }
-
 .converter-card-header {
-  padding: 16px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
+  padding: 16px; display: flex; align-items: center; gap: 12px;
   border-bottom: 1px solid var(--border);
   background: var(--bg-tertiary);
 }
-
-.converter-card-header .material-icons {
-  font-size: 24px;
-  color: var(--accent);
-}
-
-.converter-card-title {
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--text-active);
-}
-
-.converter-card-body {
-  padding: 20px 16px;
-}
-
-.converter-field {
-  margin-bottom: 16px;
-}
-
-.converter-field:last-child {
-  margin-bottom: 0;
-}
-
+.converter-card-header .material-icons { font-size: 24px; color: var(--accent); }
+.converter-card-title { font-size: 16px; font-weight: 700; color: var(--text-active); }
+.converter-card-body { padding: 20px 16px; }
+.converter-field { margin-bottom: 16px; }
+.converter-field:last-child { margin-bottom: 0; }
 .converter-field-label {
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: var(--text-secondary);
-  margin-bottom: 8px;
-  letter-spacing: 0.5px;
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  color: var(--text-secondary); margin-bottom: 8px; letter-spacing: 0.5px;
 }
-
-.converter-input-group {
-  display: flex;
-  gap: 8px;
-  align-items: stretch;
-}
-
+.converter-input-group { display: flex; gap: 8px; align-items: stretch; }
 .converter-input {
   flex: 1;
   background: var(--bg-input);
@@ -610,16 +328,8 @@ body {
   transition: border-color 0.2s;
   min-width: 0;
 }
-
-.converter-input:focus {
-  border-color: var(--border-focus);
-}
-
-.converter-input:read-only {
-  color: var(--text-secondary);
-  background: var(--bg-primary);
-}
-
+.converter-input:focus { border-color: var(--border-focus); }
+.converter-input:read-only { color: var(--text-secondary); background: var(--bg-primary); }
 .converter-select {
   background: var(--bg-input);
   border: 1px solid var(--border);
@@ -640,20 +350,14 @@ body {
   background-size: 18px;
   padding-right: 32px;
 }
-
-.converter-select:focus {
-  border-color: var(--border-focus);
-}
-
+.converter-select:focus { border-color: var(--border-focus); }
 .converter-swap-btn {
   display: flex;
   justify-content: center;
   padding: 8px 0;
 }
-
 .converter-swap-btn button {
-  width: 40px;
-  height: 40px;
+  width: 40px; height: 40px;
   border-radius: 50%;
   border: 1px solid var(--border);
   background: var(--bg-tertiary);
@@ -664,24 +368,91 @@ body {
   justify-content: center;
   transition: all 0.2s;
 }
-
 .converter-swap-btn button:active {
   background: var(--accent);
   color: white;
   border-color: var(--accent);
 }
+.converter-swap-btn button .material-icons { font-size: 20px; }
 
-.converter-swap-btn button .material-icons {
+/* History Drawer */
+.history-drawer {
+  position: fixed;
+  top: var(--header-height);
+  left: 0; right: 0;
+  bottom: var(--bottom-nav-height);
+  background: var(--bg-secondary);
+  z-index: 500;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+}
+.history-drawer.active { transform: translateY(0); }
+.history-header {
+  padding: 16px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--bg-tertiary);
+}
+.history-title {
+  font-size: 16px; font-weight: 700; color: var(--text-active);
+  display: flex; align-items: center; gap: 8px;
+}
+.history-actions {
+  display: flex; gap: 12px;
+}
+.history-action-btn {
+  background: transparent; border: none;
+  color: var(--text-secondary); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
   font-size: 20px;
 }
+.history-action-btn:active { color: var(--accent); }
+.history-list { flex: 1; overflow-y: auto; padding: 12px 16px; }
+.history-item {
+  padding: 12px; border-bottom: 1px solid var(--border);
+  cursor: pointer; transition: background 0.1s; border-radius: var(--radius);
+}
+.history-item:active { background: var(--bg-hover); }
+.history-item-exp { font-size: 13px; color: var(--text-secondary); text-align: right; margin-bottom: 4px; }
+.history-item-res { font-size: 20px; font-weight: 700; color: var(--text-active); text-align: right; }
+.history-empty { text-align: center; color: var(--text-secondary); margin-top: 40px; font-size: 14px; }
 
-.theme-options {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  margin-top: 12px;
+/* Programmer */
+.programmer-card {
+  background: var(--bg-secondary);
+  margin: 12px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  padding: 16px;
+}
+.base-row {
+  padding: 10px 12px;
+  border-radius: var(--radius);
+  margin-bottom: 6px;
+  background: var(--bg-primary);
+  border: 1px solid transparent;
+}
+.base-row.active {
+  border-color: var(--accent);
+  background: var(--bg-tertiary);
+}
+.base-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  width: 45px;
+  display: inline-block;
+}
+.base-val {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  color: var(--text-active);
+  text-align: right;
+  word-break: break-all;
+  display: inline-block;
+  width: calc(100% - 50px);
 }
 
+/* Settings */
 .theme-btn {
   padding: 12px;
   border-radius: var(--radius);
@@ -694,72 +465,34 @@ body {
   align-items: center;
   gap: 8px;
 }
-
 .theme-btn.active {
   border-color: var(--accent);
   background: var(--bg-tertiary);
   color: var(--text-active);
 }
 
+/* Menu */
 .menu-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0,0,0,0.5);
-  z-index: 1000;
-  display: none;
-  opacity: 0;
-  transition: opacity 0.2s;
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5); z-index: 1000;
+  display: none; opacity: 0; transition: opacity 0.2s;
 }
-
-.menu-overlay.active {
-  display: block;
-  opacity: 1;
-}
-
+.menu-overlay.active { display: block; opacity: 1; }
 .menu-panel {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 280px;
-  bottom: 0;
-  background: var(--bg-secondary);
-  z-index: 1001;
-  transform: translateX(-100%);
-  transition: transform 0.3s ease;
-  display: flex;
-  flex-direction: column;
+  position: fixed; top: 0; left: 0; width: 280px; bottom: 0;
+  background: var(--bg-secondary); z-index: 1001;
+  transform: translateX(-100%); transition: transform 0.3s ease;
+  display: flex; flex-direction: column;
 }
-
-.menu-panel.active {
-  transform: translateX(0);
-}
-
+.menu-panel.active { transform: translateX(0); }
 .menu-header {
   padding: 20px 16px;
   background: var(--accent);
   color: white;
 }
-
-.menu-header-title {
-  font-size: 18px;
-  font-weight: 700;
-}
-
-.menu-header-subtitle {
-  font-size: 12px;
-  opacity: 0.8;
-  margin-top: 4px;
-}
-
-.menu-items {
-  flex: 1;
-  overflow-y: auto;
-  padding: 8px 0;
-}
-
+.menu-header-title { font-size: 18px; font-weight: 700; }
+.menu-header-subtitle { font-size: 12px; opacity: 0.8; margin-top: 4px; }
+.menu-items { flex: 1; overflow-y: auto; padding: 8px 0; }
 .menu-item {
   padding: 14px 16px;
   display: flex;
@@ -770,36 +503,19 @@ body {
   font-size: 14px;
   transition: background 0.1s;
 }
-
-.menu-item:active {
-  background: var(--bg-hover);
-}
-
+.menu-item:active { background: var(--bg-hover); }
 .menu-item.active {
   background: var(--bg-active);
   color: var(--text-active);
 }
-
-.menu-item .material-icons {
-  font-size: 20px;
-  color: var(--text-secondary);
-}
-
-.menu-item.active .material-icons {
-  color: var(--accent);
-}
-
-.menu-divider {
-  height: 1px;
-  background: var(--border);
-  margin: 8px 16px;
-}
+.menu-item .material-icons { font-size: 20px; color: var(--text-secondary); }
+.menu-item.active .material-icons { color: var(--accent); }
+.menu-divider { height: 1px; background: var(--border); margin: 8px 16px; }
 
 .toast {
   position: fixed;
   bottom: 80px;
-  left: 50%;
-  transform: translateX(-50%) translateY(100px);
+  left: 50%; transform: translateX(-50%) translateY(100px);
   background: var(--bg-tertiary);
   color: var(--text-active);
   padding: 12px 24px;
@@ -811,7 +527,6 @@ body {
   box-shadow: 0 4px 12px rgba(0,0,0,0.3);
   border: 1px solid var(--border);
 }
-
 .toast.active {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
@@ -896,7 +611,7 @@ body {
     </div>
   </div>
 
-  <!-- PROGRAMMER / BASE CONVERTER PAGE -->
+  <!-- PROGRAMMER PAGE -->
   <div class="page" id="page-programmer">
     <div class="programmer-card">
       <div class="base-row active" id="base-HEX">
@@ -1011,7 +726,6 @@ body {
       </div>
     </div>
 
-    <!-- CONVERTER SECTIONS -->
     <div class="converter-section" id="section-length">
       <div class="converter-back" onclick="closeConverter()"><span class="material-icons">arrow_back</span><span>Back to Tools</span></div>
       <div class="converter-card">
@@ -1207,23 +921,21 @@ body {
 
   <!-- SETTINGS PAGE -->
   <div class="page" id="page-settings">
-    <div class="section-header" style="padding: 16px 16px 0;">Appearance</div>
-    <div class="converter-card" style="margin: 12px;">
-      <div class="converter-card-header">
-        <span class="material-icons">palette</span>
-        <span class="converter-card-title">Theme Customizer</span>
+    <div class="tools-grid">
+      <div class="theme-btn active" onclick="setTheme('vscode-dark')">
+        <span class="material-icons" style="font-size: 16px;">dark_mode</span> Dark
       </div>
-      <div class="converter-card-body">
-        <div class="theme-options">
-          <button class="theme-btn active" onclick="setTheme('vscode-dark')"><span class="material-icons" style="font-size: 16px;">dark_mode</span> Dark</button>
-          <button class="theme-btn" onclick="setTheme('vscode-light')"><span class="material-icons" style="font-size: 16px;">light_mode</span> Light</button>
-          <button class="theme-btn" onclick="setTheme('monokai')"><span class="material-icons" style="font-size: 16px;">style</span> Monokai</button>
-          <button class="theme-btn" onclick="setTheme('onedark')"><span class="material-icons" style="font-size: 16px;">code</span> One Dark</button>
-        </div>
+      <div class="theme-btn" onclick="setTheme('vscode-light')">
+        <span class="material-icons" style="font-size: 16px;">light_mode</span> Light
+      </div>
+      <div class="theme-btn" onclick="setTheme('monokai')">
+        <span class="material-icons" style="font-size: 16px;">style</span> Monokai
+      </div>
+      <div class="theme-btn" onclick="setTheme('onedark')">
+        <span class="material-icons" style="font-size: 16px;">code</span> One Dark
       </div>
     </div>
 
-    <div class="section-header" style="padding: 16px 16px 0;">Mode</div>
     <div class="converter-card" style="margin: 12px;">
       <div class="converter-card-header">
         <span class="material-icons">science</span>
@@ -1243,7 +955,6 @@ body {
       </div>
     </div>
 
-    <div class="section-header" style="padding: 16px 16px 0;">About</div>
     <div class="converter-card" style="margin: 12px;">
       <div class="converter-card-header">
         <span class="material-icons">info</span>
@@ -1251,7 +962,8 @@ body {
       </div>
       <div class="converter-card-body">
         <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.6;">
-          An advanced calculator and multi-tool suite for Android inspired by VS Code. Features Standard, Scientific, and Programmer base conversion tools, calculation history, themes, and 12 unit converters.
+          A professional calculator and unit converter with VS Code-inspired dark theme. 
+          Features standard and scientific calculator modes, programmer base conversion, calculation history, themes, and 12 unit converters.
         </p>
         <p style="font-size: 12px; color: var(--text-secondary); margin-top: 12px;">
           Version 2.0.0
@@ -1262,24 +974,6 @@ body {
 
 </div>
 
-<!-- HISTORY DRAWER -->
-<div class="history-drawer" id="historyDrawer">
-  <div class="history-header">
-    <div class="history-title">
-      <span class="material-icons">history</span>
-      <span>Calculation History</span>
-    </div>
-    <div class="history-actions">
-      <button class="history-action-btn" onclick="clearHistoryLog()" title="Clear History"><span class="material-icons">delete_outline</span></button>
-      <button class="history-action-btn" onclick="toggleHistoryDrawer()"><span class="material-icons">close</span></button>
-    </div>
-  </div>
-  <div class="history-list" id="historyList">
-    <div class="history-empty">No history yet</div>
-  </div>
-</div>
-
-<!-- BOTTOM NAVIGATION -->
 <div class="bottom-nav">
   <div class="nav-item active" onclick="showPage('calculator')">
     <span class="material-icons nav-icon">calculate</span>
@@ -1299,12 +993,11 @@ body {
   </div>
 </div>
 
-<!-- SIDEBAR MENU -->
 <div class="menu-overlay" id="menuOverlay" onclick="toggleMenu()"></div>
 <div class="menu-panel" id="menuPanel">
   <div class="menu-header">
     <div class="menu-header-title">VS Code Calculator</div>
-    <div class="menu-header-subtitle">Professional Android Suite</div>
+    <div class="menu-header-subtitle">Calculator & Converters</div>
   </div>
   <div class="menu-items">
     <div class="menu-item active" onclick="showPage('calculator'); toggleMenu();">
@@ -1326,542 +1019,24 @@ body {
   </div>
 </div>
 
+<div class="history-drawer" id="historyDrawer">
+  <div class="history-header">
+    <div class="history-title">
+      <span class="material-icons">history</span>
+      <span>Calculation History</span>
+    </div>
+    <div class="history-actions">
+      <button class="history-action-btn" onclick="clearHistoryLog()" title="Clear History"><span class="material-icons">delete_outline</span></button>
+      <button class="history-action-btn" onclick="toggleHistoryDrawer()"><span class="material-icons">close</span></button>
+    </div>
+  </div>
+  <div class="history-list" id="historyList">
+    <div class="history-empty">No history yet</div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
-<script>
-let currentInput = '0';
-let previousInput = '';
-let operator = null;
-let shouldResetScreen = false;
-let history = '';
-let historyLogs = [];
-
-const calcResult = document.getElementById('calcResult');
-const calcExpression = document.getElementById('calcExpression');
-const calcHistory = document.getElementById('calcHistory');
-
-function updateDisplay() {
-  calcResult.textContent = formatDisplay(currentInput);
-  calcExpression.innerHTML = history || '&nbsp;';
-}
-
-function formatDisplay(num) {
-  if (num === 'Error' || num === 'Infinity' || num === '-Infinity' || num === 'NaN') return 'Error';
-  const n = parseFloat(num);
-  if (isNaN(n)) return num;
-  if (Number.isInteger(n) && Math.abs(n) < 1e15) {
-    return n.toLocaleString('en-US');
-  }
-  if (num.includes('.')) {
-    const parts = num.split('.');
-    const intPart = parseInt(parts[0].replace('-', '')) || 0;
-    const sign = parts[0].startsWith('-') ? '-' : '';
-    return sign + intPart.toLocaleString('en-US') + '.' + parts[1];
-  }
-  return n.toLocaleString('en-US');
-}
-
-function getRaw(numStr) {
-  return numStr.replace(/,/g, '');
-}
-
-function appendNumber(num) {
-  if (currentInput === 'Error') clearAll();
-  if (shouldResetScreen) {
-    currentInput = num;
-    shouldResetScreen = false;
-  } else {
-    const raw = getRaw(currentInput);
-    if (raw.replace(/[^0-9]/g, '').length >= 15) return;
-    if (currentInput === '0') {
-      currentInput = num;
-    } else {
-      currentInput = currentInput + num;
-    }
-  }
-  updateDisplay();
-}
-
-function appendDecimal() {
-  if (shouldResetScreen) {
-    currentInput = '0.';
-    shouldResetScreen = false;
-    updateDisplay();
-    return;
-  }
-  if (!currentInput.includes('.')) {
-    currentInput = currentInput + '.';
-  }
-  updateDisplay();
-}
-
-function appendOperator(op) {
-  if (currentInput === 'Error') return;
-  if (operator !== null && !shouldResetScreen) {
-    compute();
-  }
-  previousInput = getRaw(currentInput);
-  operator = op;
-  history = formatDisplay(currentInput) + ' ' + getOpSymbol(op);
-  shouldResetScreen = true;
-  updateDisplay();
-}
-
-function getOpSymbol(op) {
-  switch(op) {
-    case '*': return '\u00D7';
-    case '/': return '\u00F7';
-    case '+': return '+';
-    case '-': return '-';
-    case '^': return '^';
-    default: return op;
-  }
-}
-
-function compute() {
-  if (operator === null) return;
-  let result;
-  const prev = parseFloat(previousInput);
-  const curr = parseFloat(getRaw(currentInput));
-  if (isNaN(prev) || isNaN(curr)) return;
-  switch(operator) {
-    case '+': result = prev + curr; break;
-    case '-': result = prev - curr; break;
-    case '*': result = prev * curr; break;
-    case '/':
-      if (curr === 0) { currentInput = 'Error'; operator = null; history = ''; updateDisplay(); return; }
-      result = prev / curr;
-      break;
-    case '^': result = Math.pow(prev, curr); break;
-    default: return;
-  }
-  
-  const fullExp = formatDisplay(previousInput) + ' ' + getOpSymbol(operator) + ' ' + formatDisplay(currentInput);
-  history = fullExp + ' =';
-  currentInput = parseFloat(result.toPrecision(12)).toString();
-  
-  addHistoryLog(fullExp, currentInput);
-  
-  operator = null;
-  previousInput = '';
-  shouldResetScreen = true;
-  updateDisplay();
-}
-
-function calculate() {
-  if (operator === null) return;
-  compute();
-}
-
-function clearAll() {
-  currentInput = '0';
-  previousInput = '';
-  operator = null;
-  history = '';
-  shouldResetScreen = false;
-  updateDisplay();
-}
-
-function toggleSign() {
-  if (currentInput === '0' || currentInput === 'Error') return;
-  if (currentInput.startsWith('-')) {
-    currentInput = currentInput.substring(1);
-  } else {
-    currentInput = '-' + currentInput;
-  }
-  updateDisplay();
-}
-
-function percentage() {
-  if (currentInput === 'Error') return;
-  const val = parseFloat(getRaw(currentInput));
-  currentInput = (val / 100).toString();
-  updateDisplay();
-}
-
-function appendFunction(func) {
-  if (currentInput === 'Error') return;
-  const num = parseFloat(getRaw(currentInput));
-  let result;
-  switch(func) {
-    case 'sin': result = Math.sin(num * Math.PI / 180); break;
-    case 'cos': result = Math.cos(num * Math.PI / 180); break;
-    case 'tan': result = Math.tan(num * Math.PI / 180); break;
-    case 'log': result = Math.log10(num); break;
-    case 'ln': result = Math.log(num); break;
-    case 'sqrt': result = Math.sqrt(num); break;
-    case 'cbrt': result = Math.cbrt(num); break;
-    case 'abs': result = Math.abs(num); break;
-  }
-  if (isNaN(result) || !isFinite(result)) { currentInput = 'Error'; updateDisplay(); return; }
-  const exp = func + '(' + currentInput + ')';
-  history = exp;
-  currentInput = parseFloat(result.toPrecision(12)).toString();
-  addHistoryLog(exp, currentInput);
-  shouldResetScreen = true;
-  updateDisplay();
-}
-
-function square() {
-  if (currentInput === 'Error') return;
-  const num = parseFloat(getRaw(currentInput));
-  const exp = formatDisplay(currentInput) + '\u00B2';
-  history = exp;
-  currentInput = parseFloat((num * num).toPrecision(12)).toString();
-  addHistoryLog(exp, currentInput);
-  shouldResetScreen = true;
-  updateDisplay();
-}
-
-function cube() {
-  if (currentInput === 'Error') return;
-  const num = parseFloat(getRaw(currentInput));
-  const exp = formatDisplay(currentInput) + '\u00B3';
-  history = exp;
-  currentInput = parseFloat((num * num * num).toPrecision(12)).toString();
-  addHistoryLog(exp, currentInput);
-  shouldResetScreen = true;
-  updateDisplay();
-}
-
-function power() {
-  previousInput = getRaw(currentInput);
-  operator = '^';
-  history = formatDisplay(previousInput) + '^';
-  shouldResetScreen = true;
-  updateDisplay();
-}
-
-function factorial() {
-  if (currentInput === 'Error') return;
-  const num = parseInt(getRaw(currentInput));
-  if (num < 0 || num > 170) { currentInput = 'Error'; updateDisplay(); return; }
-  let result = 1;
-  for (let i = 2; i <= num; i++) result *= i;
-  const exp = currentInput + '!';
-  history = exp;
-  currentInput = result.toString();
-  addHistoryLog(exp, currentInput);
-  shouldResetScreen = true;
-  updateDisplay();
-}
-
-function inverse() {
-  if (currentInput === 'Error') return;
-  const num = parseFloat(getRaw(currentInput));
-  if (num === 0) { currentInput = 'Error'; updateDisplay(); return; }
-  const exp = '1/(' + currentInput + ')';
-  history = exp;
-  currentInput = parseFloat((1 / num).toPrecision(12)).toString();
-  addHistoryLog(exp, currentInput);
-  shouldResetScreen = true;
-  updateDisplay();
-}
-
-function appendValue(val) {
-  if (val === 'Math.PI') {
-    currentInput = Math.PI.toString();
-  } else if (val === 'Math.E') {
-    currentInput = Math.E.toString();
-  }
-  shouldResetScreen = true;
-  updateDisplay();
-}
-
-/* History Log Logic */
-function toggleHistoryDrawer() {
-  document.getElementById('historyDrawer').classList.toggle('active');
-}
-
-function addHistoryLog(exp, res) {
-  historyLogs.unshift({ exp, res });
-  renderHistoryLogs();
-}
-
-function renderHistoryLogs() {
-  const list = document.getElementById('historyList');
-  if (historyLogs.length === 0) {
-    list.innerHTML = '<div class="history-empty">No history yet</div>';
-    return;
-  }
-  list.innerHTML = historyLogs.map((item, idx) => `
-    <div class="history-item" onclick="useHistoryItem(${idx})">
-      <div class="history-item-exp">${item.exp} =</div>
-      <div class="history-item-res">${formatDisplay(item.res)}</div>
-    </div>
-  `).join('');
-}
-
-function useHistoryItem(idx) {
-  const item = historyLogs[idx];
-  currentInput = item.res;
-  history = item.exp + ' =';
-  updateDisplay();
-  toggleHistoryDrawer();
-  showToast('Result restored');
-}
-
-function clearHistoryLog() {
-  historyLogs = [];
-  renderHistoryLogs();
-  showToast('History cleared');
-}
-
-/* Programmer / Base Converter */
-let progValue = 0;
-
-function updateProgDisplay() {
-  document.getElementById('val-HEX').textContent = progValue.toString(16).toUpperCase();
-  document.getElementById('val-DEC').textContent = progValue.toString(10);
-  document.getElementById('val-OCT').textContent = progValue.toString(8);
-  document.getElementById('val-BIN').textContent = progValue.toString(2);
-}
-
-function progAppend(char) {
-  let hexStr = progValue.toString(16).toUpperCase();
-  if (hexStr === '0') hexStr = '';
-  if (hexStr.length >= 10) return;
-  hexStr += char;
-  const parsed = parseInt(hexStr, 16);
-  if (!isNaN(parsed)) {
-    progValue = parsed;
-    updateProgDisplay();
-  }
-}
-
-function progClear() {
-  progValue = 0;
-  updateProgDisplay();
-}
-
-function progBackspace() {
-  let hexStr = progValue.toString(16).toUpperCase();
-  if (hexStr.length > 1) {
-    progValue = parseInt(hexStr.slice(0, -1), 16);
-  } else {
-    progValue = 0;
-  }
-  updateProgDisplay();
-}
-
-/* Theme Manager */
-function setTheme(theme) {
-  document.body.className = '';
-  if (theme !== 'vscode-dark') {
-    document.body.classList.add('theme-' + theme.replace('vscode-', ''));
-  }
-  document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
-  event.currentTarget.classList.add('active');
-  showToast('Theme updated!');
-}
-
-function toggleScientific() {
-  const grid = document.getElementById('scientificGrid');
-  const indicator = document.getElementById('sciToggleIndicator');
-  const knob = indicator.querySelector('div');
-  grid.classList.toggle('active');
-  if (grid.classList.contains('active')) {
-    indicator.style.background = 'var(--accent)';
-    knob.style.transform = 'translateX(20px)';
-  } else {
-    indicator.style.background = 'var(--bg-hover)';
-    knob.style.transform = 'translateX(0)';
-  }
-}
-
-function showPage(page) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
-  
-  document.getElementById('page-' + page).classList.add('active');
-  
-  const navItems = document.querySelectorAll('.nav-item');
-  const pageMap = { 'calculator': 0, 'programmer': 1, 'converters': 2, 'settings': 3 };
-  if (navItems[pageMap[page]] !== undefined) {
-    navItems[pageMap[page]].classList.add('active');
-  }
-  
-  const titles = { 'calculator': 'Calculator', 'programmer': 'Programmer Mode', 'converters': 'Converters', 'settings': 'Settings' };
-  document.getElementById('pageTitle').textContent = titles[page];
-  
-  if (page === 'converters') {
-    closeConverter();
-  }
-}
-
-function openConverter(type) {
-  document.getElementById('toolsGrid').style.display = 'none';
-  document.querySelectorAll('.converter-section').forEach(s => s.classList.remove('active'));
-  document.getElementById('section-' + type).classList.add('active');
-}
-
-function closeConverter() {
-  document.getElementById('toolsGrid').style.display = 'block';
-  document.querySelectorAll('.converter-section').forEach(s => s.classList.remove('active'));
-}
-
-function toggleMenu() {
-  const overlay = document.getElementById('menuOverlay');
-  const panel = document.getElementById('menuPanel');
-  overlay.classList.toggle('active');
-  panel.classList.toggle('active');
-}
-
-function showToast(message) {
-  const toast = document.getElementById('toast');
-  toast.textContent = message;
-  toast.classList.add('active');
-  setTimeout(() => toast.classList.remove('active'), 2000);
-}
-
-function swapUnits(type) {
-  const fromVal = document.getElementById(type + 'From').value;
-  const toVal = document.getElementById(type + 'To').value;
-  document.getElementById(type + 'From').value = toVal;
-  document.getElementById(type + 'To').value = fromVal;
-  
-  const fromSelect = document.getElementById(type + 'FromUnit');
-  const toSelect = document.getElementById(type + 'ToUnit');
-  const fromValue = fromSelect.value;
-  
-  fromSelect.value = toSelect.value;
-  toSelect.value = fromValue;
-  
-  window['convert' + type.charAt(0).toUpperCase() + type.slice(1)]();
-}
-
-/* Converters Logic */
-function convertLength() {
-  const val = parseFloat(document.getElementById('lengthFrom').value) || 0;
-  const from = document.getElementById('lengthFromUnit').value;
-  const to = document.getElementById('lengthToUnit').value;
-  const toMeters = { mm: 0.001, cm: 0.01, m: 1, km: 1000, in: 0.0254, ft: 0.3048, yd: 0.9144, mi: 1609.344 };
-  const result = val * toMeters[from] / toMeters[to];
-  document.getElementById('lengthTo').value = parseFloat(result.toPrecision(10));
-}
-
-function convertWeight() {
-  const val = parseFloat(document.getElementById('weightFrom').value) || 0;
-  const from = document.getElementById('weightFromUnit').value;
-  const to = document.getElementById('weightToUnit').value;
-  const toGrams = { mg: 0.001, g: 1, kg: 1000, ton: 1000000, oz: 28.3495, lb: 453.592, stone: 6350.29 };
-  const result = val * toGrams[from] / toGrams[to];
-  document.getElementById('weightTo').value = parseFloat(result.toPrecision(10));
-}
-
-function convertTemperature() {
-  const val = parseFloat(document.getElementById('tempFrom').value) || 0;
-  const from = document.getElementById('tempFromUnit').value;
-  const to = document.getElementById('tempToUnit').value;
-  let celsius;
-  if (from === 'c') celsius = val;
-  else if (from === 'f') celsius = (val - 32) * 5/9;
-  else celsius = val - 273.15;
-  let result;
-  if (to === 'c') result = celsius;
-  else if (to === 'f') result = celsius * 9/5 + 32;
-  else result = celsius + 273.15;
-  document.getElementById('tempTo').value = parseFloat(result.toPrecision(10));
-}
-
-function convertCurrency() {
-  const val = parseFloat(document.getElementById('currencyFrom').value) || 0;
-  const from = document.getElementById('currencyFromUnit').value;
-  const to = document.getElementById('currencyToUnit').value;
-  const toUSD = { USD: 1, EUR: 1.09, GBP: 1.27, INR: 0.012, JPY: 0.0067, CAD: 0.74, AUD: 0.65, CNY: 0.14 };
-  const result = val * toUSD[from] / toUSD[to];
-  document.getElementById('currencyTo').value = parseFloat(result.toPrecision(10));
-}
-
-function convertArea() {
-  const val = parseFloat(document.getElementById('areaFrom').value) || 0;
-  const from = document.getElementById('areaFromUnit').value;
-  const to = document.getElementById('areaToUnit').value;
-  const toSqm = { sqm: 1, sqkm: 1000000, sqft: 0.092903, acre: 4046.86, ha: 10000 };
-  const result = val * toSqm[from] / toSqm[to];
-  document.getElementById('areaTo').value = parseFloat(result.toPrecision(10));
-}
-
-function convertSpeed() {
-  const val = parseFloat(document.getElementById('speedFrom').value) || 0;
-  const from = document.getElementById('speedFromUnit').value;
-  const to = document.getElementById('speedToUnit').value;
-  const toKmh = { kmh: 1, ms: 3.6, mph: 1.60934, knot: 1.852 };
-  const result = val * toKmh[from] / toKmh[to];
-  document.getElementById('speedTo').value = parseFloat(result.toPrecision(10));
-}
-
-function convertVolume() {
-  const val = parseFloat(document.getElementById('volumeFrom').value) || 0;
-  const from = document.getElementById('volumeFromUnit').value;
-  const to = document.getElementById('volumeToUnit').value;
-  const toMl = { ml: 1, l: 1000, gal: 3785.41, cup: 236.588 };
-  const result = val * toMl[from] / toMl[to];
-  document.getElementById('volumeTo').value = parseFloat(result.toPrecision(10));
-}
-
-function convertEnergy() {
-  const val = parseFloat(document.getElementById('energyFrom').value) || 0;
-  const from = document.getElementById('energyFromUnit').value;
-  const to = document.getElementById('energyToUnit').value;
-  const toJoules = { j: 1, kj: 1000, cal: 4.184, kcal: 4184, kwh: 3600000 };
-  const result = val * toJoules[from] / toJoules[to];
-  document.getElementById('energyTo').value = parseFloat(result.toPrecision(10));
-}
-
-function convertPressure() {
-  const val = parseFloat(document.getElementById('pressureFrom').value) || 0;
-  const from = document.getElementById('pressureFromUnit').value;
-  const to = document.getElementById('pressureToUnit').value;
-  const toPa = { pa: 1, bar: 100000, psi: 6894.76, atm: 101325 };
-  const result = val * toPa[from] / toPa[to];
-  document.getElementById('pressureTo').value = parseFloat(result.toPrecision(10));
-}
-
-function convertFuel() {
-  const val = parseFloat(document.getElementById('fuelFrom').value) || 0;
-  const from = document.getElementById('fuelFromUnit').value;
-  const to = document.getElementById('fuelToUnit').value;
-  let result;
-  if (from === to) {
-    result = val;
-  } else if (from === 'mpg' && to === 'kml') {
-    result = val * 0.425144;
-  } else if (from === 'mpg' && to === 'l100') {
-    result = val === 0 ? 0 : 235.215 / val;
-  } else if (from === 'kml' && to === 'mpg') {
-    result = val / 0.425144;
-  } else if (from === 'kml' && to === 'l100') {
-    result = val === 0 ? 0 : 100 / val;
-  } else if (from === 'l100' && to === 'mpg') {
-    result = val === 0 ? 0 : 235.215 / val;
-  } else if (from === 'l100' && to === 'kml') {
-    result = val === 0 ? 0 : 100 / val;
-  }
-  document.getElementById('fuelTo').value = parseFloat(result.toPrecision(10));
-}
-
-function convertData() {
-  const val = parseFloat(document.getElementById('dataFrom').value) || 0;
-  const from = document.getElementById('dataFromUnit').value;
-  const to = document.getElementById('dataToUnit').value;
-  const toBytes = { bit: 0.125, byte: 1, kb: 1024, mb: 1048576, gb: 1073741824, tb: 1099511627776 };
-  const result = val * toBytes[from] / toBytes[to];
-  document.getElementById('dataTo').value = parseFloat(result.toPrecision(10));
-}
-
-function convertTime() {
-  const val = parseFloat(document.getElementById('timeFrom').value) || 0;
-  const from = document.getElementById('timeFromUnit').value;
-  const to = document.getElementById('timeToUnit').value;
-  const toSeconds = { ms: 0.001, s: 1, min: 60, hr: 3600, day: 86400, week: 604800, month: 2592000, year: 31536000 };
-  const result = val * toSeconds[from] / toSeconds[to];
-  document.getElementById('timeTo').value = parseFloat(result.toPrecision(10));
-}
-
-updateDisplay();
-updateProgDisplay();
-</script>
+<script type="module" src="./src/index.js"></script>
 </body>
 </html>
