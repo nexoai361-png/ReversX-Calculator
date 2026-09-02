@@ -45,15 +45,17 @@ export class UIManager {
 
   toggleScientificMode() {
     this.elements.scientificGrid.classList.toggle('active');
-    const indicator = this.elements.sciToggleIndicator;
-    const knob = indicator.querySelector('div');
-    
-    if (this.elements.scientificGrid.classList.contains('active')) {
-      indicator.style.background = 'var(--accent)';
-      knob.style.transform = 'translateX(20px)';
-    } else {
-      indicator.style.background = 'var(--bg-hover)';
-      knob.style.transform = 'translateX(0)';
+    if (this.elements.sciToggleIndicator) {
+      const indicator = this.elements.sciToggleIndicator;
+      const knob = indicator.querySelector('div');
+
+      if (this.elements.scientificGrid.classList.contains('active')) {
+        indicator.style.background = 'var(--accent)';
+        knob.style.transform = 'translateX(20px)';
+      } else {
+        indicator.style.background = 'var(--bg-hover)';
+        knob.style.transform = 'translateX(0)';
+      }
     }
   }
 

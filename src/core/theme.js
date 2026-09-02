@@ -1,4 +1,4 @@
-import { themeConfig } from './utils/data.js';
+import { themeConfig } from '../utils/data.js';
 
 export class ThemeManager {
   constructor() {

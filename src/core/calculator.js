@@ -4,7 +4,8 @@ export class CalculatorCore {
       currentInput: '0',
       previousInput: '',
       operator: null,
-      shouldResetScreen: false
+      shouldResetScreen: false,
+      history: ''
     };
     this.historyLogs = [];
   }
@@ -272,9 +273,12 @@ export class CalculatorCore {
 
   getState() {
     return {
-      ...this.state,
-      formatDisplay: (num) => this.formatDisplay(num),
-      historyLogs: this.historyLogs
+      currentInput: this.state.currentInput,
+      previousInput: this.state.previousInput,
+      operator: this.state.operator,
+      shouldResetScreen: this.state.shouldResetScreen,
+      history: this.state.history,
+      formatDisplay: (num) => this.formatDisplay(num)
     };
   }
 }
